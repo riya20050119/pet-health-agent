@@ -3,105 +3,203 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#00897b">
+<meta name="theme-color" content="#5EC8B6">
 <title>宠医智伴 - AI宠物健康顾问</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus{outline:none}
 html{-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#f5f5f5;color:#1a1d2e;line-height:1.5;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#FAF8F5;color:#3D4A3D;line-height:1.5;overflow-x:hidden}
 button{border:none;background:none;cursor:pointer;font-family:inherit}
 input,textarea,select{font-family:inherit}
 img{max-width:100%;display:block}
-:root{--primary:#00897b;--primary-light:#4db6ac;--primary-dark:#00695c;--primary-bg:#e0f2f1;--accent:#ff9800;--accent-light:#ffb74d;--accent-bg:#fff3e0;--danger:#f44336;--danger-bg:#ffebee;--success:#4caf50;--success-bg:#e8f5e9;--bg:#f5f5f5;--card-bg:#fff;--text:#1a1d2e;--text-secondary:#666;--text-hint:#999;--border:#e0e0e0;--shadow:0 1px 3px rgba(0,0,0,.08);--radius:12px;--radius-sm:8px}
-#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative;box-shadow:0 0 40px rgba(0,0,0,.05)}
-.app-header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:12px 16px;flex-shrink:0;position:sticky;top:0;z-index:100}
+:root{
+  --primary:#5EC8B6;--primary-light:#8DD9CC;--primary-dark:#4AAB98;--primary-bg:#E8F7F3;
+  --accent:#FF9E7A;--accent-light:#FFB89E;--accent-bg:#FFF0EB;
+  --lilac:#B8A4D4;--lilac-bg:#F3EDF9;
+  --warm:#FFD56B;--warm-bg:#FFF8E8;
+  --danger:#FF6B6B;--danger-bg:#FFE8E8;
+  --success:#6BCF7F;--success-bg:#E8F8EC;
+  --bg:#FAF8F5;--card-bg:#fff;--text:#3D4A3D;--text-secondary:#7A8A7A;--text-hint:#AAB5AA;
+  --border:#EDE8E0;--shadow:0 2px 12px rgba(94,200,182,.08);--shadow-hover:0 4px 20px rgba(94,200,182,.15);
+  --radius:16px;--radius-sm:12px;--radius-lg:24px;--radius-pill:99px
+}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative;box-shadow:0 0 60px rgba(0,0,0,.04)}
+.app-header{background:linear-gradient(135deg,#5EC8B6,#7DD8C8);padding:14px 18px;flex-shrink:0;position:sticky;top:0;z-index:100;border-radius:0 0 24px 24px}
 .header-content{display:flex;align-items:center;justify-content:space-between}
-.app-title{color:#fff;font-size:18px;font-weight:700}
-.icon-btn{color:#fff;font-size:22px;padding:4px 8px;opacity:.9}
-.icon-btn:active{opacity:.6}
-.app-main{flex:1;overflow-y:auto;position:relative}
-.page{display:none}
+.app-title{color:#fff;font-size:19px;font-weight:700;letter-spacing:.5px}
+.icon-btn{color:#fff;font-size:22px;padding:6px 10px;opacity:.9;border-radius:var(--radius-pill);transition:background .2s}
+.icon-btn:active{background:rgba(255,255,255,.2)}
+.app-main{flex:1;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch}
+.page{display:none;animation:fadeInUp .3s ease}
 .page.active{display:block}
-.page-inner{padding:16px;padding-bottom:80px}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:8px}
-.section-header h2{font-size:16px;font-weight:700;color:var(--text)}
-.btn-text{color:var(--primary);font-size:14px;font-weight:600;padding:4px 8px}
-.btn-text:active{opacity:.6}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-inner{padding:16px;padding-bottom:90px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px}
+.section-header h2{font-size:17px;font-weight:700;color:var(--text)}
+.btn-text{color:var(--primary);font-size:14px;font-weight:600;padding:6px 12px;border-radius:var(--radius-pill);background:var(--primary-bg);transition:all .2s}
+.btn-text:active{transform:scale(.95)}
+
+/* Pet cards */
 .pet-list{display:flex;flex-direction:column;gap:10px}
-.pet-card{background:var(--card-bg);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);transition:transform .15s}
+.pet-card{background:var(--card-bg);border-radius:var(--radius);padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);transition:all .2s;border:2px solid transparent}
 .pet-card:active{transform:scale(.98)}
-.pet-avatar{width:48px;height:48px;border-radius:50%;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.pet-card.selected{border-color:var(--primary)}
+.pet-avatar{width:52px;height:52px;border-radius:50%;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
 .pet-info{flex:1}
 .pet-info .name{font-size:15px;font-weight:600}
 .pet-info .meta{font-size:12px;color:var(--text-secondary);margin-top:2px}
-.pet-status{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:600}
+.pet-status{font-size:11px;padding:4px 12px;border-radius:var(--radius-pill);font-weight:600}
 .pet-status.healthy{background:var(--success-bg);color:var(--success)}
 .pet-status.warning{background:var(--accent-bg);color:var(--accent)}
 .pet-status.danger{background:var(--danger-bg);color:var(--danger)}
 .pet-card-actions{display:flex;gap:4px;margin-left:8px}
-.pet-card-actions button{font-size:16px;padding:4px 6px;opacity:.5}
+.pet-card-actions button{font-size:16px;padding:4px 6px;opacity:.5;border-radius:8px}
+.pet-card-actions button:active{opacity:1}
+
+/* Quick actions */
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qa-card{background:var(--card-bg);border-radius:var(--radius);padding:16px 12px;text-align:center;box-shadow:var(--shadow);transition:transform .15s}
-.qa-card:active{transform:scale(.96)}
-.qa-icon{font-size:28px;display:block;margin-bottom:6px}
-.qa-label{font-size:13px;color:var(--text-secondary)}
+.qa-card{background:var(--card-bg);border-radius:var(--radius);padding:18px 12px;text-align:center;box-shadow:var(--shadow);transition:all .2s}
+.qa-card:active{transform:scale(.96);box-shadow:var(--shadow-hover)}
+.qa-icon{font-size:30px;display:block;margin-bottom:8px}
+.qa-label{font-size:13px;color:var(--text-secondary);font-weight:500}
+.qa-card:nth-child(1) .qa-icon{filter:hue-rotate(0deg)}
+.qa-card:nth-child(2){background:linear-gradient(135deg,#FFF0EB,#fff)}
+.qa-card:nth-child(3){background:linear-gradient(135deg,#F3EDF9,#fff)}
+.qa-card:nth-child(4){background:linear-gradient(135deg,#E8F7F3,#fff)}
+
+/* Reminders */
 .reminder-list{display:flex;flex-direction:column;gap:8px}
-.reminder-card{background:var(--accent-bg);border-radius:var(--radius-sm);padding:10px 12px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:10px}
+.reminder-card{background:var(--accent-bg);border-radius:var(--radius-sm);padding:12px 14px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:10px;transition:all .2s}
+.reminder-card:active{transform:translateX(2px)}
 .reminder-card .icon{font-size:20px}
 .reminder-card .info{flex:1}
-.reminder-card .title{font-size:13px;font-weight:600;color:#e65100}
-.reminder-card .desc{font-size:12px;color:#bf7a30;margin-top:1px}
+.reminder-card .title{font-size:13px;font-weight:600;color:#D6744A}
+.reminder-card .desc{font-size:12px;color:#C49A80;margin-top:1px}
+
+/* Empty state */
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-hint)}
 .empty-state p{font-size:14px;margin-bottom:4px}
-.chat-page{display:flex;flex-direction:column;height:calc(100vh - 120px);padding:0}
-.chat-header{padding:8px 16px;border-bottom:1px solid var(--border);background:var(--card-bg)}
+.empty-state .empty-icon{font-size:40px;display:block;margin-bottom:12px;opacity:.6}
+
+/* Chat */
+.chat-page{display:flex;flex-direction:column;height:calc(100vh - 140px);padding:0}
+.chat-header{padding:10px 16px;border-bottom:1px solid var(--border);background:var(--card-bg)}
 .chat-pet-info{font-size:13px;color:var(--text-secondary);text-align:center}
 .chat-pet-info .selected{color:var(--primary);font-weight:600}
 .chat-messages{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
 .chat-welcome{text-align:center;padding:40px 20px;color:var(--text-hint)}
-.chat-welcome-icon{font-size:40px;display:block;margin-bottom:12px}
+.chat-welcome-icon{font-size:44px;display:block;margin-bottom:12px}
 .chat-welcome p{font-size:14px;margin-bottom:6px}
 .chat-welcome-hint{font-size:12px;color:var(--text-hint)}
-.msg{max-width:82%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;word-wrap:break-word;white-space:pre-wrap}
-.msg.ai{background:var(--card-bg);color:var(--text);align-self:flex-start;border:1px solid var(--border);border-bottom-left-radius:4px}
-.msg.user{background:var(--primary);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.msg.system{align-self:center;background:var(--primary-bg);color:var(--primary-dark);font-size:12px;border-radius:8px;padding:4px 12px}
-.msg img{max-width:200px;border-radius:8px;margin-top:6px}
+.msg{max-width:82%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.6;word-wrap:break-word;white-space:pre-wrap}
+.msg.ai{background:var(--card-bg);color:var(--text);align-self:flex-start;border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--shadow)}
+.msg.user{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg.system{align-self:center;background:var(--primary-bg);color:var(--primary-dark);font-size:12px;border-radius:var(--radius-pill);padding:4px 14px}
+.msg img{max-width:200px;border-radius:10px;margin-top:6px}
 .msg .diagnosis-block{margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.06)}
 .msg .diagnosis-block .label{font-size:12px;color:var(--accent);font-weight:600;margin-bottom:2px}
-.msg .diagnosis-block .severity{display:inline-block;font-size:11px;padding:2px 10px;border-radius:10px;margin-bottom:6px}
+.msg .diagnosis-block .severity{display:inline-block;font-size:11px;padding:3px 12px;border-radius:var(--radius-pill);margin-bottom:6px}
 .severity.urgent{background:var(--danger-bg);color:var(--danger)}
 .severity.soon{background:var(--accent-bg);color:var(--accent)}
 .severity.observe{background:var(--success-bg);color:var(--success)}
-.msg .hospital-btn,.msg .diet-btn{display:inline-block;margin-top:8px;padding:6px 16px;border-radius:8px;font-size:13px;font-weight:600}
+.msg .hospital-btn,.msg .diet-btn{display:inline-block;margin-top:8px;padding:8px 18px;border-radius:var(--radius-pill);font-size:13px;font-weight:600;transition:transform .15s}
 .msg .hospital-btn{background:var(--primary);color:#fff}
-.msg .diet-btn{background:var(--accent);color:#fff}
+.msg .diet-btn{background:var(--accent);color:#fff;margin-left:6px}
+.msg .hospital-btn:active,.msg .diet-btn:active{transform:scale(.95)}
 .chat-input-area{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;border-top:1px solid var(--border);background:var(--card-bg)}
-.chat-photo-btn{font-size:22px;padding:6px;flex-shrink:0}
+.chat-photo-btn{font-size:24px;padding:6px;flex-shrink:0;border-radius:50%;transition:background .2s}
+.chat-photo-btn:active{background:var(--primary-bg)}
 .chat-input-wrap{flex:1}
-.chat-input{width:100%;border:1px solid var(--border);border-radius:20px;padding:8px 14px;font-size:14px;resize:none;max-height:100px;line-height:1.4}
-.chat-send-btn{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .2s}
+.chat-input{width:100%;border:2px solid var(--border);border-radius:var(--radius-pill);padding:8px 16px;font-size:14px;resize:none;max-height:100px;line-height:1.4;background:var(--bg);transition:border-color .2s}
+.chat-input:focus{border-color:var(--primary)}
+.chat-send-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
 .chat-send-btn:disabled{opacity:.4}
 .chat-send-btn:active{transform:scale(.92)}
+
+/* Diet calendar */
+.calendar-wrap{background:var(--card-bg);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:14px}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-nav .month-label{font-size:17px;font-weight:700;color:var(--text)}
+.cal-nav button{font-size:18px;color:var(--primary);padding:4px 10px;border-radius:var(--radius-pill);transition:background .2s}
+.cal-nav button:active{background:var(--primary-bg)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px}
+.cal-weekdays span{text-align:center;font-size:11px;color:var(--text-hint);font-weight:600}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:13px;position:relative;transition:all .15s;cursor:pointer}
+.cal-day.empty{cursor:default}
+.cal-day.other{color:var(--text-hint);opacity:.4}
+.cal-day.today{background:var(--primary-bg);color:var(--primary-dark);font-weight:700}
+.cal-day.selected{background:var(--primary);color:#fff;font-weight:700}
+.cal-day.has-record::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);position:absolute;bottom:4px}
+.cal-day.selected.has-record::after{background:#fff}
+.cal-day.has-photo::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--lilac);position:absolute;top:4px}
+.cal-day.selected.has-photo::before{background:#fff}
+
+.feed-day-panel{margin-bottom:14px}
+.feed-day-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.feed-day-title .badge{font-size:11px;padding:2px 8px;border-radius:var(--radius-pill);background:var(--primary-bg);color:var(--primary);font-weight:600}
+.feed-records{display:flex;flex-direction:column;gap:8px}
+.feed-record{background:var(--card-bg);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);display:flex;gap:10px;transition:all .2s}
+.feed-record:active{transform:scale(.98)}
+.feed-record img{width:56px;height:56px;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0;background:var(--bg)}
+.feed-record .feed-info{flex:1}
+.feed-record .feed-time{font-size:12px;color:var(--text-hint)}
+.feed-record .feed-food{font-size:14px;font-weight:600;margin-top:2px}
+.feed-record .feed-nutri{font-size:11px;color:var(--text-secondary);margin-top:4px;display:flex;gap:8px}
+.feed-record .feed-nutri span{background:var(--primary-bg);padding:2px 8px;border-radius:var(--radius-pill);color:var(--primary-dark)}
+.feed-record .del-btn{font-size:16px;opacity:.4;align-self:center;padding:4px}
+.feed-record .del-btn:active{opacity:1;color:var(--danger)}
+.nutri-summary{background:linear-gradient(135deg,var(--primary-bg),#fff);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:14px}
+.nutri-summary h3{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.nutri-bars{display:flex;flex-direction:column;gap:8px}
+.nutri-bar{display:flex;align-items:center;gap:8px}
+.nutri-bar .label{font-size:12px;color:var(--text-secondary);width:50px;flex-shrink:0}
+.nutri-bar .bar{flex:1;height:8px;border-radius:4px;background:#EDEDEE;overflow:hidden}
+.nutri-bar .fill{height:100%;border-radius:4px;transition:width .5s ease}
+.nutri-bar .val{font-size:12px;font-weight:600;color:var(--text);width:50px;text-align:right}
+.add-feed-btn{position:fixed;right:20px;bottom:90px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:26px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(94,200,182,.4);z-index:50;transition:transform .2s}
+.add-feed-btn:active{transform:scale(.9)}
+
+/* Growth album */
+.album-timeline{display:flex;flex-direction:column;gap:16px}
+.album-entry{display:flex;gap:12px}
+.album-date-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:50px}
+.album-date-col .age-tag{font-size:11px;color:var(--primary);font-weight:600;margin-bottom:4px}
+.album-date-col .date-circle{width:36px;height:36px;border-radius:50%;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--primary-dark);flex-shrink:0}
+.album-date-col .line{flex:1;width:2px;background:var(--border);margin-top:4px;min-height:20px}
+.album-content{flex:1;background:var(--card-bg);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.album-photo{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--bg)}
+.album-meta{padding:10px 14px}
+.album-meta .weight{font-size:15px;font-weight:700;color:var(--primary)}
+.album-meta .note{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.album-meta .date{font-size:11px;color:var(--text-hint);margin-top:4px}
+.album-empty{text-align:center;padding:60px 20px}
+.album-empty .icon{font-size:48px;opacity:.4;margin-bottom:12px}
+
+/* Diet plan cards */
 .diet-content{display:flex;flex-direction:column;gap:12px}
-.diet-summary{background:var(--card-bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);text-align:center}
-.diet-calorie{font-size:32px;font-weight:700;color:var(--primary)}
+.diet-summary{background:linear-gradient(135deg,var(--primary-bg),#fff);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);text-align:center}
+.diet-calorie{font-size:36px;font-weight:700;color:var(--primary)}
 .diet-calorie .unit{font-size:16px;color:var(--text-hint);font-weight:400}
 .diet-calorie-label{font-size:13px;color:var(--text-secondary);margin-top:2px}
-.diet-warning{background:var(--accent-bg);border-radius:var(--radius-sm);padding:10px;margin-top:10px;font-size:13px;color:#e65100;border-left:3px solid var(--accent);text-align:left}
-.meal-card{background:var(--card-bg);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
-.meal-time{font-size:14px;font-weight:600;color:var(--primary)}
+.diet-warning{background:var(--accent-bg);border-radius:var(--radius-sm);padding:10px;margin-top:10px;font-size:13px;color:#D6744A;border-left:3px solid var(--accent);text-align:left}
+.meal-card{background:var(--card-bg);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);transition:all .2s}
+.meal-card:active{transform:scale(.99)}
+.meal-time{font-size:14px;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:4px}
 .meal-content{font-size:13px;color:var(--text-secondary);margin-top:4px;line-height:1.6}
-.meal-adjustment{font-size:12px;color:#e65100;margin-top:6px;background:var(--accent-bg);padding:4px 8px;border-radius:6px}
+.meal-adjustment{font-size:12px;color:var(--accent);margin-top:6px;background:var(--accent-bg);padding:4px 10px;border-radius:8px}
 .forbidden-list{background:var(--danger-bg);border-radius:var(--radius);padding:14px}
 .forbidden-list h4{font-size:14px;color:var(--danger);margin-bottom:6px}
 .forbidden-list .items{font-size:13px;color:#c62828;line-height:1.8}
+
+/* Health tabs */
 .health-tabs{display:flex;gap:0;margin-bottom:12px;border-bottom:2px solid var(--border)}
-.health-tab{flex:1;padding:8px;text-align:center;font-size:14px;color:var(--text-secondary);border-bottom:2px solid transparent;margin-bottom:-2px;font-weight:500}
+.health-tab{flex:1;padding:8px;text-align:center;font-size:14px;color:var(--text-secondary);border-bottom:2px solid transparent;margin-bottom:-2px;font-weight:500;transition:all .2s}
 .health-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 .record-list,.history-list{display:flex;flex-direction:column;gap:8px}
-.record-card,.history-card{background:var(--card-bg);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.record-card,.history-card{background:var(--card-bg);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;transition:all .2s}
+.record-card:active{transform:scale(.99)}
 .record-card .icon{font-size:22px;flex-shrink:0}
 .record-card .info{flex:1}
 .record-card .info .name{font-size:14px;font-weight:600}
@@ -109,28 +207,32 @@ img{max-width:100%;display:block}
 .record-card .info .note{font-size:12px;color:var(--text-secondary);margin-top:2px}
 .history-card .date{font-size:12px;color:var(--text-hint)}
 .history-card .summary{font-size:13px;color:var(--text);margin-top:4px;line-height:1.5}
-.history-card .severity-badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;margin-top:4px}
+.history-card .severity-badge{display:inline-block;font-size:11px;padding:2px 10px;border-radius:var(--radius-pill);margin-top:4px}
 .weight-chart{background:var(--card-bg);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
-.weight-chart canvas{width:100%!important}
+
+/* Bottom nav */
 .bottom-nav{display:flex;background:var(--card-bg);border-top:1px solid var(--border);padding:6px 0;padding-bottom:calc(6px + env(safe-area-inset-bottom,0));flex-shrink:0}
-.nav-item{flex:1;text-align:center;padding:4px;color:var(--text-hint);transition:color .2s}
+.nav-item{flex:1;text-align:center;padding:4px;color:var(--text-hint);transition:color .2s;position:relative}
 .nav-item.active{color:var(--primary)}
-.nav-icon{font-size:22px;display:block}
-.nav-label{font-size:11px;margin-top:2px}
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;align-items:flex-end;justify-content:center}
+.nav-icon{font-size:21px;display:block}
+.nav-label{font-size:10px;margin-top:2px;font-weight:500}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:1000;align-items:flex-end;justify-content:center}
 .modal-overlay.active{display:flex;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:#fff;width:100%;max-width:480px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;animation:slideUp .3s ease-out}
+.modal{background:#fff;width:100%;max-width:480px;border-radius:28px 28px 0 0;max-height:85vh;display:flex;flex-direction:column;animation:slideUp .3s ease-out}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
-.modal-header h3{font-size:16px;font-weight:700}
-.modal-close{font-size:18px;color:var(--text-hint);padding:4px 8px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border)}
+.modal-header h3{font-size:17px;font-weight:700}
+.modal-close{font-size:20px;color:var(--text-hint);padding:4px 8px;border-radius:50%}
+.modal-close:active{background:var(--bg)}
 .modal-body{flex:1;overflow-y:auto;padding:16px}
 .modal-footer{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border);padding-bottom:calc(12px + env(safe-area-inset-bottom,0))}
 .form-group{margin-bottom:14px}
 .form-group label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
 .label-hint{font-weight:400;font-size:12px;color:var(--text-hint)}
-.form-input{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;background:#fafafa}
+.form-input{width:100%;border:2px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;background:var(--bg);transition:border-color .2s}
 .form-input:focus{border-color:var(--primary);background:#fff}
 .form-hint{font-size:12px;color:var(--text-hint);margin-top:4px}
 .form-row{display:flex;gap:10px}
@@ -140,11 +242,11 @@ textarea.form-input{resize:vertical;min-height:60px}
 .option-item{text-align:center;padding:10px 4px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);transition:all .15s}
 .option-item .emoji{font-size:20px;display:block;margin-bottom:2px}
 .option-item.selected{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
-.btn-primary{flex:1;background:var(--primary);color:#fff;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600}
-.btn-primary:active{background:var(--primary-dark)}
+.btn-primary{flex:1;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600;transition:transform .15s}
+.btn-primary:active{transform:scale(.97)}
 .btn-secondary{flex:1;background:#f0f0f0;color:var(--text-secondary);border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600}
 .hospital-list,.product-list{display:flex;flex-direction:column;gap:8px}
-.hospital-card,.product-card{background:#fafafa;border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border)}
+.hospital-card,.product-card{background:var(--bg);border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border)}
 .hospital-card .name{font-size:14px;font-weight:600;color:var(--text)}
 .hospital-card .address{font-size:12px;color:var(--text-secondary);margin-top:2px}
 .hospital-card .meta{display:flex;gap:12px;margin-top:6px}
@@ -154,8 +256,10 @@ textarea.form-input{resize:vertical;min-height:60px}
 .product-card .product-name{font-size:14px;font-weight:600}
 .product-card .product-reason{font-size:13px;color:var(--text-secondary);margin-top:4px;line-height:1.5}
 .product-card .product-price{font-size:13px;color:var(--accent);font-weight:600;margin-top:4px}
-.product-card .product-tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;background:var(--primary-bg);color:var(--primary);margin-top:6px}
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:#fff;padding:10px 24px;border-radius:24px;font-size:14px;z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
+.product-card .product-tag{display:inline-block;font-size:11px;padding:2px 10px;border-radius:var(--radius-pill);background:var(--primary-bg);color:var(--primary);margin-top:6px}
+
+/* Toast & Loading */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(45,60,50,.92);color:#fff;padding:10px 24px;border-radius:var(--radius-pill);font-size:14px;z-index:2000;opacity:0;pointer-events:none;transition:opacity .3s}
 .toast.show{opacity:1}
 .loading-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:1500;align-items:center;justify-content:center;flex-direction:column}
 .loading-overlay.active{display:flex}
@@ -163,11 +267,17 @@ textarea.form-input{resize:vertical;min-height:60px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-text{color:#fff;font-size:14px;margin-top:12px}
 .typing-indicator{display:flex;gap:4px;align-items:center;padding:8px 4px}
-.typing-indicator span{width:8px;height:8px;border-radius:50%;background:var(--text-hint);animation:bounce 1.4s infinite}
+.typing-indicator span{width:8px;height:8px;border-radius:50%;background:var(--primary);animation:bounce 1.4s infinite}
 .typing-indicator span:nth-child(2){animation-delay:.2s}
 .typing-indicator span:nth-child(3){animation-delay:.4s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
-@media(min-width:481px){#app{border-left:1px solid #e0e0e0;border-right:1px solid #e0e0e0}}
+
+/* Photo upload preview */
+.photo-preview{width:80px;height:80px;border-radius:var(--radius-sm);object-fit:cover;margin-top:8px}
+.photo-upload-btn{display:flex;align-items:center;justify-content:center;width:80px;height:80px;border:2px dashed var(--border);border-radius:var(--radius-sm);font-size:28px;color:var(--text-hint);transition:all .2s}
+.photo-upload-btn:active{border-color:var(--primary);color:var(--primary)}
+
+@media(min-width:481px){#app{border-left:1px solid var(--border);border-right:1px solid var(--border)}}
 </style>
 </head>
 <body>
@@ -184,14 +294,14 @@ textarea.form-input{resize:vertical;min-height:60px}
       <div class="page-inner">
         <div class="section-header"><h2>我的宠物</h2><button class="btn-text" id="btn-add-pet">+ 添加</button></div>
         <div class="pet-list" id="pet-list"></div>
-        <div class="section-header"><h2>快捷功能</h2></div>
+        <div class="section-header" style="margin-top:18px"><h2>快捷功能</h2></div>
         <div class="quick-actions">
           <button class="qa-card" data-page="consultation"><span class="qa-icon">🩺</span><span class="qa-label">AI问诊</span></button>
-          <button class="qa-card" data-page="diet"><span class="qa-icon">🍽️</span><span class="qa-label">饮食计划</span></button>
+          <button class="qa-card" data-page="diet"><span class="qa-icon">🍽️</span><span class="qa-label">饮食方案</span></button>
           <button class="qa-card" id="qa-products"><span class="qa-icon">🛒</span><span class="qa-label">产品推荐</span></button>
           <button class="qa-card" id="qa-hospital"><span class="qa-icon">🏥</span><span class="qa-label">附近医院</span></button>
         </div>
-        <div class="section-header"><h2>健康提醒</h2></div>
+        <div class="section-header" style="margin-top:18px"><h2>健康提醒</h2></div>
         <div class="reminder-list" id="reminder-list"><div class="empty-state">暂无提醒</div></div>
       </div>
     </section>
@@ -210,11 +320,20 @@ textarea.form-input{resize:vertical;min-height:60px}
         </div>
       </div>
     </section>
-    <!-- Diet -->
-    <section class="page" id="page-diet">
+    <!-- Diet Calendar -->
+    <section class="page" id="page-calendar">
       <div class="page-inner">
-        <div class="section-header"><h2>每日饮食计划</h2><button class="btn-text" id="btn-generate-diet">生成方案</button></div>
-        <div class="diet-content" id="diet-content"><div class="empty-state"><p>点击「生成方案」</p><p>AI将根据宠物档案和健康状态生成个性化饮食计划</p></div></div>
+        <div class="section-header"><h2>喂食日历</h2><button class="btn-text" id="btn-gen-diet">生成方案</button></div>
+        <div class="calendar-wrap" id="calendar-wrap"></div>
+        <div class="nutri-summary" id="nutri-summary" style="display:none"></div>
+        <div class="feed-day-panel" id="feed-day-panel"></div>
+      </div>
+    </section>
+    <!-- Growth Album -->
+    <section class="page" id="page-album">
+      <div class="page-inner">
+        <div class="section-header"><h2>成长相册</h2><button class="btn-text" id="btn-add-photo">+ 记录</button></div>
+        <div class="album-timeline" id="album-timeline"></div>
       </div>
     </section>
     <!-- Health Records -->
@@ -235,7 +354,8 @@ textarea.form-input{resize:vertical;min-height:60px}
   <nav class="bottom-nav">
     <button class="nav-item active" data-page="dashboard"><span class="nav-icon">🏠</span><span class="nav-label">首页</span></button>
     <button class="nav-item" data-page="consultation"><span class="nav-icon">💬</span><span class="nav-label">问诊</span></button>
-    <button class="nav-item" data-page="diet"><span class="nav-icon">🍽️</span><span class="nav-label">饮食</span></button>
+    <button class="nav-item" data-page="calendar"><span class="nav-icon">📅</span><span class="nav-label">日历</span></button>
+    <button class="nav-item" data-page="album"><span class="nav-icon">📸</span><span class="nav-label">相册</span></button>
     <button class="nav-item" data-page="health"><span class="nav-icon">📋</span><span class="nav-label">档案</span></button>
   </nav>
 
@@ -280,6 +400,42 @@ textarea.form-input{resize:vertical;min-height:60px}
     </div>
   </div>
 
+  <!-- Modal: Add Feed -->
+  <div class="modal-overlay" id="modal-feed">
+    <div class="modal">
+      <div class="modal-header"><h3>记录喂食</h3><button class="modal-close" data-close="modal-feed">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>日期</label><input type="date" class="form-input" id="feed-date"></div>
+        <div class="form-row">
+          <div class="form-group"><label>时间</label><input type="time" class="form-input" id="feed-time"></div>
+          <div class="form-group"><label>餐次</label><select class="form-input" id="feed-meal"><option value="morning">早餐</option><option value="noon">午餐</option><option value="evening">晚餐</option><option value="snack">加餐</option></select></div>
+        </div>
+        <div class="form-group"><label>食物内容</label><textarea class="form-input" id="feed-food" rows="2" placeholder="如：鸡胸肉30g + 皇家猫粮20g"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>卡路里(kcal)</label><input type="number" class="form-input" id="feed-calories" placeholder="120" step="1"></div>
+          <div class="form-group"><label>蛋白质(g)</label><input type="number" class="form-input" id="feed-protein" placeholder="15" step="0.1"></div>
+        </div>
+        <div class="form-group"><label>拍照记录</label><input type="file" id="feed-photo-input" accept="image/*" style="display:none"><div class="photo-upload-btn" id="feed-photo-btn">📷</div><img class="photo-preview" id="feed-photo-preview" style="display:none"></div>
+        <div class="form-group"><label>备注</label><input type="text" class="form-input" id="feed-note" placeholder="如：吃得很快/剩了一些"></div>
+      </div>
+      <div class="modal-footer"><button class="btn-secondary" data-close="modal-feed">取消</button><button class="btn-primary" id="btn-save-feed">保存</button></div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Album Photo -->
+  <div class="modal-overlay" id="modal-album">
+    <div class="modal">
+      <div class="modal-header"><h3>成长记录</h3><button class="modal-close" data-close="modal-album">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>拍照/上传</label><input type="file" id="album-photo-input" accept="image/*" style="display:none"><div class="photo-upload-btn" id="album-photo-btn">📷</div><img class="photo-preview" id="album-photo-preview" style="display:none"></div>
+        <div class="form-group"><label>日期</label><input type="date" class="form-input" id="album-date"></div>
+        <div class="form-group"><label>体重(kg)</label><input type="number" class="form-input" id="album-weight" placeholder="4.5" step="0.1"></div>
+        <div class="form-group"><label>成长笔记</label><textarea class="form-input" id="album-note" rows="2" placeholder="如：今天带小橘去打了疫苗，表现很勇敢！"></textarea></div>
+      </div>
+      <div class="modal-footer"><button class="btn-secondary" data-close="modal-album">取消</button><button class="btn-primary" id="btn-save-album">保存</button></div>
+    </div>
+  </div>
+
   <!-- Modal: Hospital -->
   <div class="modal-overlay" id="modal-hospital">
     <div class="modal">
@@ -298,18 +454,28 @@ textarea.form-input{resize:vertical;min-height:60px}
     </div>
   </div>
 
+  <!-- Modal: Diet Plan -->
+  <div class="modal-overlay" id="modal-diet">
+    <div class="modal">
+      <div class="modal-header"><h3>每日饮食计划</h3><button class="modal-close" data-close="modal-diet">✕</button></div>
+      <div class="modal-body" id="diet-modal-body"></div>
+      <div class="modal-footer"><button class="btn-primary" data-close="modal-diet">完成</button></div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
   <div class="loading-overlay" id="loading-overlay"><div class="loading-spinner"></div><p class="loading-text" id="loading-text">AI思考中...</p></div>
+  <button class="add-feed-btn" id="add-feed-fab" style="display:none">+</button>
 </div>
 
 <script>
-// ====== CONFIG (内置API Key) ======
-const DASHSCOPE_API_KEY = 'sk-ws-H.PIIIIHR.Qcr7.MEUCIQCesyC0OO7C5HDtOezL-SnV4AAk1yKxuxEPCFyKd0j6iAIgWqmqA1Wcuxwdk2CfXnoVDmJ2xZ5B3FovRg7u1RGXnyQ';
-const API_URL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
+// ====== CONFIG ======
+const DASHSCOPE_API_KEY='sk-ws-H.PIIIIHR.Qcr7.MEUCIQCesyC0OO7C5HDtOezL-SnV4AAk1yKxuxEPCFyKd0j6iAIgWqmqA1Wcuxwdk2CfXnoVDmJ2xZ5B3FovRg7u1RGXnyQ';
+const API_URL='https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions';
 
-// ====== STORE (LocalStorage) ======
+// ====== STORE ======
 const Store={
-  KEYS:{PETS:'ph_pets',CURRENT_PET:'ph_current_pet',CONSULTATIONS:'ph_consultations',DIET_PLANS:'ph_diet_plans',HEALTH_RECORDS:'ph_health_records',PRODUCTS:'ph_products'},
+  KEYS:{PETS:'ph_pets',CURRENT_PET:'ph_current_pet',CONSULTATIONS:'ph_consultations',DIET_PLANS:'ph_diet_plans',HEALTH_RECORDS:'ph_health_records',PRODUCTS:'ph_products',FEED_RECORDS:'ph_feed_records',ALBUM_RECORDS:'ph_album_records'},
   _get(k,f){try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}},
   _set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){console.error(e)}},
   getPets(){return this._get(this.KEYS.PETS,[])},
@@ -330,8 +496,15 @@ const Store={
   deleteHealthRecord(id){const a=this._get(this.KEYS.HEALTH_RECORDS,[]).filter(r=>r.id!==id);this._set(this.KEYS.HEALTH_RECORDS,a)},
   getProducts(petId){const a=this._get(this.KEYS.PRODUCTS,[]);return petId?a.filter(p=>p.petId===petId):a},
   saveProducts(petId,products){const a=this._get(this.KEYS.PRODUCTS,[]);const i=a.findIndex(x=>x.petId===petId);const e={petId,products,savedAt:new Date().toISOString()};if(i>=0)a[i]=e;else a.push(e);this._set(this.KEYS.PRODUCTS,a)},
-  genId(p='id'){return `${p}_${Date.now()}_${Math.random().toString(36).slice(2,7)}`},
-  formatDate(d){const dt=new Date(d);return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`},
+  getFeedRecords(petId){const a=this._get(this.KEYS.FEED_RECORDS,[]);return petId?a.filter(r=>r.petId===petId):a},
+  getFeedRecordsByDate(petId,date){return this.getFeedRecords(petId).filter(r=>r.date===date)},
+  saveFeedRecord(r){const a=this._get(this.KEYS.FEED_RECORDS,[]);const i=a.findIndex(x=>x.id===r.id);if(i>=0)a[i]=r;else a.push(r);this._set(this.KEYS.FEED_RECORDS,a)},
+  deleteFeedRecord(id){const a=this._get(this.KEYS.FEED_RECORDS,[]).filter(r=>r.id!==id);this._set(this.KEYS.FEED_RECORDS,a)},
+  getAlbumRecords(petId){const a=this._get(this.KEYS.ALBUM_RECORDS,[]);return petId?a.filter(r=>r.petId===petId).sort((a,b)=>b.date.localeCompare(a.date)):[]},
+  saveAlbumRecord(r){const a=this._get(this.KEYS.ALBUM_RECORDS,[]);const i=a.findIndex(x=>x.id===r.id);if(i>=0)a[i]=r;else a.push(r);this._set(this.KEYS.ALBUM_RECORDS,a)},
+  deleteAlbumRecord(id){const a=this._get(this.KEYS.ALBUM_RECORDS,[]).filter(r=>r.id!==id);this._set(this.KEYS.ALBUM_RECORDS,a)},
+  genId(p='id'){return`${p}_${Date.now()}_${Math.random().toString(36).slice(2,7)}`},
+  formatDate(d){const dt=new Date(d);return`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`},
   calcAge(b){if(!b)return'未知';const dt=new Date(b);const n=new Date();const m=(n.getFullYear()-dt.getFullYear())*12+(n.getMonth()-dt.getMonth());if(m<12)return m+'个月';const y=Math.floor(m/12);const r=m%12;return r>0?y+'岁'+r+'个月':y+'岁'}
 };
 
@@ -354,10 +527,10 @@ const API={
 
 // ====== PROMPTS ======
 const Prompts={
-  consultation(p){return `你是"宠医智伴"，一位专业、温和的宠物健康顾问AI。你正在为以下宠物进行问诊：\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n问诊规则：\n1.模拟真实兽医问诊流程：主诉→追问现病史→鉴别诊断→建议\n2.每次只问1-2个问题\n3.语气亲切温和，称呼宠物名字\n4.如果用户上传了照片，分析可能的外观异常\n5.信息不足时继续追问，不要急于下结论\n6.症状较轻给居家护理建议，需要就医时明确告知\n\n收集到足够信息后，输出最终诊断分析，格式如下：\n\n【可能原因】\n1.xxx\n2.xxx\n3.xxx\n\n【严重程度】\n（🟢可观察|🟡建议就医|🔴紧急就医）\n\n【居家处理建议】\n-xxx\n\n【就医前准备】\n-xxx\n\n【健康调整因子】\n列出英文标识符，如：diabetes_risk,kidney_risk,obesity,food_allergy,urinary_issue,digestive_issue,skin_issue\n如无则写：none\n\n请用中文回复。`},
-  image(p,desc){return `你是宠物健康顾问。请分析这张宠物照片。\n\n宠物信息：${p.name}，${p.type==='cat'?'猫':p.type==='dog'?'狗':p.type}，${p.breed||'品种未知'}，${Store.calcAge(p.birthDate)}，体重${p.weight||'未知'}kg\n\n用户描述：${desc||'无'}\n\n请观察是否有以下异常：皮肤红肿/脱毛/皮屑、眼睛分泌物/红肿、耳朵分泌物、口腔牙龈、毛发粗糙、体态消瘦或肥胖等。\n用简洁中文描述你观察到的，并给出初步判断。`},
-  diet(p,c){return `你是"宠医智伴"的饮食方案引擎。请为以下宠物生成个性化每日饮食方案。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n最近问诊结果：\n${c?JSON.stringify(c.diagnosis||c,null,2):'无最近问诊记录'}\n\n健康调整因子：${c?.diagnosis?.healthFactors?.join(', ')||'none'}\n\n请根据品种营养需求、年龄阶段、体重热量(RER=70×体重^0.75)、健康调整因子生成方案。\n\n输出格式(JSON)：\n{"dailyCalorieTarget":数字,"healthAdjustments":[{"factor":"diabetes_risk","adjustment":"碳水减少40%","reason":"糖尿病风险"}],"meals":[{"time":"08:00","food":"具体食物和份量","calories":数字,"adjustment":"调整说明或空"},{"time":"18:00","food":"具体食物和份量","calories":数字,"adjustment":"调整说明或空"}],"forbiddenFoods":["食物1","食物2"],"nutritionRatio":{"protein":数字,"fat":数字,"carbs":数字},"summary":"一句话总结"}\n\n规则：食物推荐要具体，有健康调整因子时每个meal的adjustment必须填写，禁忌食物包含该物种常见禁忌。只输出JSON。`},
-  products(p,d,c){return `你是"宠医智伴"的产品推荐引擎。请根据宠物健康状况推荐产品。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n饮食方案：\n${d?JSON.stringify(d,null,2):'无'}\n\n健康状态：\n${c?.diagnosis?JSON.stringify(c.diagnosis,null,2):'无问诊记录'}\n\n推荐规则：1.基于饮食方案推荐粮食/零食/保健品 2.有健康问题自动过滤不适产品 3.每推荐含名称/理由/价格/适用说明 4.推荐3-5个\n\n输出格式(JSON数组)：\n[{"name":"名称","category":"主粮/零食/保健品","reason":"推荐理由","priceRange":"50-100元","suitableFor":"适用说明"}]\n\n只输出JSON。`}
+  consultation(p){return`你是"宠医智伴"，一位专业、温和的宠物健康顾问AI。你正在为以下宠物进行问诊：\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n问诊规则：\n1.模拟真实兽医问诊流程：主诉→追问现病史→鉴别诊断→建议\n2.每次只问1-2个问题\n3.语气亲切温和，称呼宠物名字\n4.如果用户上传了照片，分析可能的外观异常\n5.信息不足时继续追问，不要急于下结论\n6.症状较轻给居家护理建议，需要就医时明确告知\n\n收集到足够信息后，输出最终诊断分析，格式如下：\n\n【可能原因】\n1.xxx\n2.xxx\n3.xxx\n\n【严重程度】\n（🟢可观察|🟡建议就医|🔴紧急就医）\n\n【居家处理建议】\n-xxx\n\n【就医前准备】\n-xxx\n\n【健康调整因子】\n列出英文标识符，如：diabetes_risk,kidney_risk,obesity,food_allergy,urinary_issue,digestive_issue,skin_issue\n如无则写：none\n\n请用中文回复。`},
+  image(p,desc){return`你是宠物健康顾问。请分析这张宠物照片。\n\n宠物信息：${p.name}，${p.type==='cat'?'猫':p.type==='dog'?'狗':p.type}，${p.breed||'品种未知'}，${Store.calcAge(p.birthDate)}，体重${p.weight||'未知'}kg\n\n用户描述：${desc||'无'}\n\n请观察是否有以下异常：皮肤红肿/脱毛/皮屑、眼睛分泌物/红肿、耳朵分泌物、口腔牙龈、毛发粗糙、体态消瘦或肥胖等。\n用简洁中文描述你观察到的，并给出初步判断。`},
+  diet(p,c){return`你是"宠医智伴"的饮食方案引擎。请为以下宠物生成个性化每日饮食方案。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n最近问诊结果：\n${c?JSON.stringify(c.diagnosis||c,null,2):'无最近问诊记录'}\n\n健康调整因子：${c?.diagnosis?.healthFactors?.join(', ')||'none'}\n\n请根据品种营养需求、年龄阶段、体重热量(RER=70×体重^0.75)、健康调整因子生成方案。\n\n输出格式(JSON)：\n{"dailyCalorieTarget":数字,"healthAdjustments":[{"factor":"diabetes_risk","adjustment":"碳水减少40%","reason":"糖尿病风险"}],"meals":[{"time":"08:00","food":"具体食物和份量","calories":数字,"protein":数字,"adjustment":"调整说明或空"},{"time":"18:00","food":"具体食物和份量","calories":数字,"protein":数字,"adjustment":"调整说明或空"}],"forbiddenFoods":["食物1","食物2"],"nutritionRatio":{"protein":数字,"fat":数字,"carbs":数字},"summary":"一句话总结"}\n\n规则：食物推荐要具体，有健康调整因子时每个meal的adjustment必须填写，禁忌食物包含该物种常见禁忌。只输出JSON。`},
+  products(p,d,c){return`你是"宠医智伴"的产品推荐引擎。请根据宠物健康状况推荐产品。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n饮食方案：\n${d?JSON.stringify(d,null,2):'无'}\n\n健康状态：\n${c?.diagnosis?JSON.stringify(c.diagnosis,null,2):'无问诊记录'}\n\n推荐规则：1.基于饮食方案推荐粮食/零食/保健品 2.有健康问题自动过滤不适产品 3.每推荐含名称/理由/价格/适用说明 4.推荐3-5个\n\n输出格式(JSON数组)：\n[{"name":"名称","category":"主粮/零食/保健品","reason":"推荐理由","priceRange":"50-100元","suitableFor":"适用说明"}]\n\n只输出JSON。`}
 };
 
 // ====== PROFILE ======
@@ -367,14 +540,14 @@ const Profile={
   getEmoji(t){const p=this.petTypes.find(x=>x.key===t);return p?p.emoji:'🐾'},
   getTypeLabel(t){const p=this.petTypes.find(x=>x.key===t);return p?p.label:t},
   getHealthStatus(pid){const l=Store.getLatestConsultation(pid);if(!l||!l.diagnosis)return{cls:'healthy',label:'健康'};const s=l.diagnosis.severity||'';if(s.includes('紧急')||s.includes('🔴'))return{cls:'danger',label:'需就医'};if(s.includes('建议')||s.includes('🟡'))return{cls:'warning',label:'需关注'};return{cls:'healthy',label:'健康'}},
-  renderPetList(){const pets=Store.getPets();const el=document.getElementById('pet-list');if(pets.length===0){el.innerHTML='<div class="empty-state"><p>还没有添加宠物</p><p>点击右上角「添加」创建</p></div>';return}
-    el.innerHTML=pets.map(p=>{const cid=Store.getCurrentPetId();const sel=p.id===cid;const age=Store.calcAge(p.birthDate);const hs=this.getHealthStatus(p.id);return `<div class="pet-card" data-pet-id="${p.id}" style="${sel?'border:2px solid var(--primary);':''}"><div class="pet-avatar">${this.getEmoji(p.type)}</div><div class="pet-info"><div class="name">${p.name}</div><div class="meta">${this.getTypeLabel(p.type)} · ${p.breed||'品种未知'} · ${age} · ${p.weight||'?'}kg</div></div><div class="pet-status ${hs.cls}">${hs.label}</div><div class="pet-card-actions"><button class="pet-edit-btn" data-pet-id="${p.id}">✏️</button><button class="pet-delete-btn" data-pet-id="${p.id}">🗑️</button></div></div>`}).join('');
+  renderPetList(){const pets=Store.getPets();const el=document.getElementById('pet-list');if(pets.length===0){el.innerHTML='<div class="empty-state"><span class="empty-icon">🐾</span><p>还没有添加宠物</p><p>点击右上角「添加」创建</p></div>';return}
+    el.innerHTML=pets.map(p=>{const cid=Store.getCurrentPetId();const sel=p.id===cid;const age=Store.calcAge(p.birthDate);const hs=this.getHealthStatus(p.id);return`<div class="pet-card${sel?' selected':''}" data-pet-id="${p.id}"><div class="pet-avatar">${this.getEmoji(p.type)}</div><div class="pet-info"><div class="name">${p.name}</div><div class="meta">${this.getTypeLabel(p.type)} · ${p.breed||'品种未知'} · ${age} · ${p.weight||'?'}kg</div></div><div class="pet-status ${hs.cls}">${hs.label}</div><div class="pet-card-actions"><button class="pet-edit-btn" data-pet-id="${p.id}">✏️</button><button class="pet-delete-btn" data-pet-id="${p.id}">🗑️</button></div></div>`}).join('');
     el.querySelectorAll('.pet-card').forEach(c=>{c.addEventListener('click',e=>{if(e.target.closest('.pet-card-actions'))return;Store.setCurrentPetId(c.dataset.petId);this.renderPetList();App.updateChatPetInfo();App.showToast('已切换宠物')})});
     el.querySelectorAll('.pet-edit-btn').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();this.openEditModal(b.dataset.petId)})});
     el.querySelectorAll('.pet-delete-btn').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();if(confirm('确定删除这只宠物吗？')){Store.deletePet(b.dataset.petId);this.renderPetList();App.updateChatPetInfo();App.renderReminders();App.showToast('已删除')}})})},
   openAddModal(){this.editingPetId=null;this.selectedType='cat';document.getElementById('pet-edit-title').textContent='添加宠物';['pet-name','pet-breed','pet-medical-history','pet-allergies','pet-current-diet'].forEach(id=>document.getElementById(id).value='');document.getElementById('pet-birthdate').value='';document.getElementById('pet-gender').value='male';document.getElementById('pet-weight').value='';document.getElementById('pet-activity').value='medium';document.getElementById('pet-neutered').value='false';this.renderTypeGrid();App.openModal('modal-pet-edit')},
   openEditModal(id){const p=Store.getPet(id);if(!p)return;this.editingPetId=id;this.selectedType=p.type;document.getElementById('pet-edit-title').textContent='编辑宠物';document.getElementById('pet-name').value=p.name||'';document.getElementById('pet-breed').value=p.breed||'';document.getElementById('pet-birthdate').value=p.birthDate||'';document.getElementById('pet-gender').value=p.gender||'male';document.getElementById('pet-weight').value=p.weight||'';document.getElementById('pet-activity').value=p.activity||'medium';document.getElementById('pet-neutered').value=String(p.neutered);document.getElementById('pet-medical-history').value=p.medicalHistory||'';document.getElementById('pet-allergies').value=p.allergies||'';document.getElementById('pet-current-diet').value=p.currentDiet||'';this.renderTypeGrid();App.openModal('modal-pet-edit')},
-  renderTypeGrid(){const g=document.getElementById('pet-type-grid');g.innerHTML=this.petTypes.map(t=>`<div class="option-item ${t.key===this.selectedType?'selected':''}" data-type="${t.key}"><span class="emoji">${t.emoji}</span>${t.label}</div>`).join('');g.querySelectorAll('.option-item').forEach(i=>{i.addEventListener('click',()=>{this.selectedType=i.dataset.type;this.renderTypeGrid()})})},
+  renderTypeGrid(){const g=document.getElementById('pet-type-grid');g.innerHTML=this.petTypes.map(t=>`<div class="option-item${t.key===this.selectedType?' selected':''}" data-type="${t.key}"><span class="emoji">${t.emoji}</span>${t.label}</div>`).join('');g.querySelectorAll('.option-item').forEach(i=>{i.addEventListener('click',()=>{this.selectedType=i.dataset.type;this.renderTypeGrid()})})},
   save(){const name=document.getElementById('pet-name').value.trim();if(!name){App.showToast('请输入宠物名称');return}
     const pet={id:this.editingPetId||Store.genId('pet'),name,type:this.selectedType,breed:document.getElementById('pet-breed').value.trim(),birthDate:document.getElementById('pet-birthdate').value,gender:document.getElementById('pet-gender').value,weight:parseFloat(document.getElementById('pet-weight').value)||null,activity:document.getElementById('pet-activity').value,neutered:document.getElementById('pet-neutered').value==='true',medicalHistory:document.getElementById('pet-medical-history').value.trim(),allergies:document.getElementById('pet-allergies').value.trim(),currentDiet:document.getElementById('pet-current-diet').value.trim(),createdAt:this.editingPetId?Store.getPet(this.editingPetId).createdAt:new Date().toISOString()};
     Store.savePet(pet);if(!this.editingPetId)Store.setCurrentPetId(pet.id);this.renderPetList();App.updateChatPetInfo();App.renderReminders();App.closeModal('modal-pet-edit');App.showToast(this.editingPetId?'已更新':'已添加')}
@@ -401,7 +574,7 @@ const Consultation={messages:[],currentId:null,isWaiting:false,pendingImage:null
   async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.pendingImage=await API.fileToBase64(f);App.hideLoading();document.getElementById('chat-photo-btn').textContent='✅';App.showToast('图片已添加，发送即可分析');e.target.value=''},
   parseDiagnosis(t){if(!t.includes('可能原因')&&!t.includes('严重程度'))return null;const sm=t.match(/严重程度[\s\S]*?(🟢|🟡|🔴|可观察|建议就医|紧急就医)/);const sev=sm?sm[1]:'';const cs=t.match(/可能原因[\s\S]*?(?=严重程度|健康调整因子|$)/);const causes=cs?cs[0].split('\n').filter(l=>/^\d/.test(l.trim())).map(l=>l.replace(/^\d+\.\s*/,'').trim()):[];const fm=t.match(/健康调整因子[\s\S]*$/);let hf=[];if(fm&&!fm[0].includes('none')){const known=['diabetes_risk','kidney_risk','obesity','food_allergy','urinary_issue','digestive_issue','skin_issue','dental_issue','eye_issue','ear_issue'];hf=known.filter(f=>fm[0].includes(f))}let sl='observe';if(sev.includes('🔴')||sev.includes('紧急'))sl='urgent';else if(sev.includes('🟡')||sev.includes('建议就医'))sl='soon';return{possibleCauses:causes,severity:sev.trim(),severityLevel:sl,healthFactors:hf,rawText:t}},
   save(pid,text,diag){const c={id:this.currentId,petId:pid,timestamp:new Date().toISOString(),messages:this.messages.map(m=>({role:m.role,content:m.content.includes('[照片分析结果')?m.content.split('[照片分析结果')[0].trim():m.content,hasImage:!!m.image})),diagnosis:diag};Store.saveConsultation(c);Profile.renderPetList();App.renderReminders()},
-  renderMessages(){const c=document.getElementById('chat-messages');if(this.messages.length===0)return;const pet=Store.getCurrentPet();c.innerHTML='<div class="msg system">— '+Profile.getEmoji(pet.type)+' '+pet.name+' 的问诊 —</div>'+this.messages.map(m=>{if(m.role==='user'){let h='<div class="msg user">'+this.esc(m.content.replace(/\[照片分析结果[\s\S]*\]/,'[已附照片]'));if(m.image)h+='<img src="'+m.image+'" alt="photo">';h+='</div>';return h}return '<div class="msg ai">'+this.fmt(m.content)+'</div>'}).join('');c.scrollTop=c.scrollHeight},
+  renderMessages(){const c=document.getElementById('chat-messages');if(this.messages.length===0)return;const pet=Store.getCurrentPet();c.innerHTML='<div class="msg system">— '+Profile.getEmoji(pet.type)+' '+pet.name+' 的问诊 —</div>'+this.messages.map(m=>{if(m.role==='user'){let h='<div class="msg user">'+this.esc(m.content.replace(/\[照片分析结果[\s\S]*\]/,'[已附照片]'));if(m.image)h+='<img src="'+m.image+'" alt="photo">';h+='</div>';return h}return'<div class="msg ai">'+this.fmt(m.content)+'</div>'}).join('');c.scrollTop=c.scrollHeight},
   fmt(text){let html=this.esc(text);if(text.includes('可能原因')&&text.includes('严重程度')){const d=this.parseDiagnosis(text);if(d){const sc=d.severityLevel==='urgent'?'urgent':d.severityLevel==='soon'?'soon':'observe';const lb=d.severityLevel==='urgent'?'🔴 紧急就医':d.severityLevel==='soon'?'🟡 建议就医':'🟢 可观察';let btns='';if(d.severityLevel==='urgent'||d.severityLevel==='soon')btns+='<br><button class="hospital-btn" onclick="App.openModal(\'modal-hospital\')">🏥 查找附近宠物医院</button>';btns+='<button class="diet-btn" onclick="Diet.generateFromConsultation(\''+this.currentId+'\')">🍽️ 生成饮食方案</button>';html+='<div class="diagnosis-block"><div class="severity '+sc+'">'+lb+'</div>'+btns+'</div>'}}return html},
   showTyping(){const c=document.getElementById('chat-messages');const d=document.createElement('div');d.className='msg ai';d.id='typing-indicator';d.innerHTML='<div class="typing-indicator"><span></span><span></span><span></span></div>';c.appendChild(d);c.scrollTop=c.scrollHeight},
   hideTyping(){const e=document.getElementById('typing-indicator');if(e)e.remove()},
@@ -415,14 +588,85 @@ const Diet={
   async generateFromConsultation(cid){const c=Store.getConsultations().find(x=>x.id===cid);if(!c){App.showToast('未找到问诊记录');return}Store.setCurrentPetId(c.petId);await this.gen(c.petId,c)},
   async gen(pid,co){const p=Store.getPet(pid);if(!p)return;const c=co||Store.getLatestConsultation(pid);App.showLoading('正在生成饮食方案...');
     try{const r=await API.chatWithSystem(Prompts.diet(p,c),[{role:'user',content:'请生成饮食方案'}]);const plan=API.parseJSON(r);if(!plan){App.showToast('AI返回格式异常，请重试');App.hideLoading();return}
-      const dp={id:Store.genId('diet'),petId:pid,consultationId:c?.id||null,date:Store.formatDate(new Date()),...plan};Store.saveDietPlan(dp);this.render(dp);App.switchPage('diet');App.showToast('饮食方案已生成')}catch(e){App.showToast('生成失败: '+e.message)}finally{App.hideLoading()}},
-  renderLatest(){const p=Store.getCurrentPet();if(!p)return;this.render(Store.getLatestDietPlan(p.id))},
-  render(plan){const el=document.getElementById('diet-content');if(!plan){el.innerHTML='<div class="empty-state"><p>点击「生成方案」</p><p>AI将根据宠物档案和健康状态生成个性化饮食计划</p></div>';return}
+      const dp={id:Store.genId('diet'),petId:pid,consultationId:c?.id||null,date:Store.formatDate(new Date()),...plan};Store.saveDietPlan(dp);this.renderModal(dp);App.openModal('modal-diet');App.showToast('饮食方案已生成')}catch(e){App.showToast('生成失败: '+e.message)}finally{App.hideLoading()}},
+  renderModal(plan){const el=document.getElementById('diet-modal-body');if(!plan){el.innerHTML='<p>暂无饮食方案</p>';return}
     let ah='';if(plan.healthAdjustments&&plan.healthAdjustments.length>0)ah='<div class="diet-warning">'+plan.healthAdjustments.map(a=>`⚠️ ${a.reason||a.factor}：${a.adjustment}`).join('<br>')+'</div>';
     let mh='';if(plan.meals&&plan.meals.length>0)mh=plan.meals.map(m=>`<div class="meal-card"><div class="meal-time">⏰ ${m.time}</div><div class="meal-content">${m.food}</div>${m.adjustment?`<div class="meal-adjustment">🔧 ${m.adjustment}</div>`:''}</div>`).join('');
     let fh='';if(plan.forbiddenFoods&&plan.forbiddenFoods.length>0)fh=`<div class="forbidden-list"><h4>🚫 禁忌食物</h4><div class="items">${plan.forbiddenFoods.join('、')}</div></div>`;
     let nh='';if(plan.nutritionRatio){const r=plan.nutritionRatio;nh=`<div class="meal-card"><div class="meal-time">📊 营养素配比</div><div class="meal-content">蛋白质 ${r.protein}% · 脂肪 ${r.fat}% · 碳水 ${r.carbs}%</div></div>`}
     el.innerHTML=`<div class="diet-summary"><div class="diet-calorie">${plan.dailyCalorieTarget||'—'}<span class="unit"> kcal/天</span></div><div class="diet-calorie-label">${plan.summary||'每日饮食计划'}</div>${ah}</div>${mh}${nh}${fh}`}
+};
+
+// ====== FEED CALENDAR ======
+const FeedCalendar={
+  currentDate:null,selectedDate:null,photoData:null,
+  init(){const today=new Date();this.currentDate=new Date(today.getFullYear(),today.getMonth(),1);this.selectedDate=Store.formatDate(today);
+    document.getElementById('btn-gen-diet').addEventListener('click',()=>Diet.generate());
+    document.getElementById('add-feed-fab').addEventListener('click',()=>this.openAddModal());
+    document.getElementById('btn-save-feed').addEventListener('click',()=>this.save());
+    document.getElementById('feed-photo-btn').addEventListener('click',()=>document.getElementById('feed-photo-input').click());
+    document.getElementById('feed-photo-input').addEventListener('change',e=>this.handlePhoto(e))},
+  render(){const p=Store.getCurrentPet();const el=document.getElementById('calendar-wrap');if(!p){el.innerHTML='<div class="empty-state"><span class="empty-icon">📅</span><p>请先选择宠物</p></div>';document.getElementById('feed-day-panel').innerHTML='';document.getElementById('nutri-summary').style.display='none';document.getElementById('add-feed-fab').style.display='none';return}
+    document.getElementById('add-feed-fab').style.display='flex';
+    const y=this.currentDate.getFullYear(),m=this.currentDate.getMonth();
+    const monthNames=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    const firstDay=new Date(y,m,1).getDay();const daysInMonth=new Date(y,m+1,0).getDate();
+    const prevMonthDays=new Date(y,m,0).getDate();
+    const todayStr=Store.formatDate(new Date());
+    const feedRecords=Store.getFeedRecords(p.id);
+    const recordDates=new Set(feedRecords.map(r=>r.date));
+    const photoDates=new Set(feedRecords.filter(r=>r.photo).map(r=>r.date));
+    let cells='';
+    for(let i=0;i<firstDay;i++){const d=prevMonthDays-firstDay+i+1;cells+=`<div class="cal-day other">${d}</div>`}
+    for(let d=1;d<=daysInMonth;d++){
+      const ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const cls=['cal-day'];if(ds===todayStr)cls.push('today');if(ds===this.selectedDate)cls.push('selected');if(recordDates.has(ds))cls.push('has-record');if(photoDates.has(ds))cls.push('has-photo');
+      cells+=`<div class="${cls.join(' ')}" data-date="${ds}">${d}</div>`}
+    const nextDays=(7-((firstDay+daysInMonth)%7))%7;
+    for(let d=1;d<=nextDays;d++){cells+=`<div class="cal-day other">${d}</div>`}
+    el.innerHTML=`<div class="cal-nav"><button id="cal-prev">‹</button><span class="month-label">${y}年 ${monthNames[m]}</span><button id="cal-next">›</button></div><div class="cal-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="cal-grid">${cells}</div>`;
+    document.getElementById('cal-prev').addEventListener('click',()=>{this.currentDate=new Date(y,m-1,1);this.render()});
+    document.getElementById('cal-next').addEventListener('click',()=>{this.currentDate=new Date(y,m+1,1);this.render()});
+    el.querySelectorAll('.cal-day[data-date]').forEach(c=>{c.addEventListener('click',()=>{this.selectedDate=c.dataset.date;this.render()})});
+    this.renderDayPanel();this.renderNutriSummary()},
+  renderDayPanel(){const p=Store.getCurrentPet();const el=document.getElementById('feed-day-panel');if(!p){el.innerHTML='';return}
+    const records=Store.getFeedRecordsByDate(p.id,this.selectedDate);
+    const dateLabel=this.selectedDate===Store.formatDate(new Date())?'今天':this.selectedDate;
+    if(records.length===0){el.innerHTML=`<div class="feed-day-title">${dateLabel} <span class="badge">无记录</span></div><div class="empty-state" style="padding:20px"><p>点击右下角 + 记录喂食</p></div>`;return}
+    let totalCal=0,totalPro=0;
+    records.forEach(r=>{totalCal+=r.calories||0;totalPro+=r.protein||0});
+    el.innerHTML=`<div class="feed-day-title">${dateLabel} <span class="badge">${records.length}条记录</span> <span class="badge">${totalCal}kcal</span></div><div class="feed-records">${records.map(r=>`<div class="feed-record">${r.photo?`<img src="${r.photo}">`:'<div style="width:56px;height:56px;border-radius:12px;background:var(--primary-bg);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🍽️</div>'}<div class="feed-info"><div class="feed-time">${r.time||''} · ${this.mealLabel(r.meal)}</div><div class="feed-food">${r.food||''}</div><div class="feed-nutri">${r.calories?`<span>${r.calories}kcal</span>`:''}${r.protein?`<span>蛋白质${r.protein}g</span>`:''}</div>${r.note?`<div class="feed-time" style="margin-top:2px">📝 ${r.note}</div>`:''}</div><button class="del-btn" data-id="${r.id}">🗑️</button></div>`).join('')}</div>`;
+    el.querySelectorAll('.del-btn').forEach(b=>{b.addEventListener('click',()=>{if(confirm('删除这条记录？')){Store.deleteFeedRecord(b.dataset.id);this.render();this.renderNutriSummary();App.showToast('已删除')}})})},
+  renderNutriSummary(){const p=Store.getCurrentPet();const el=document.getElementById('nutri-summary');if(!p){el.style.display='none';return}
+    const plan=Store.getLatestDietPlan(p.id);if(!plan||!plan.dailyCalorieTarget){el.style.display='none';return}
+    const todayStr=Store.formatDate(new Date());const records=Store.getFeedRecordsByDate(p.id,todayStr);
+    let totalCal=0,totalPro=0;records.forEach(r=>{totalCal+=r.calories||0;totalPro+=r.protein||0});
+    const targetCal=plan.dailyCalorieTarget;const targetPro=plan.nutritionRatio?Math.round(targetCal*plan.nutritionRatio.protein/100/4):0;
+    const calPct=Math.min(100,Math.round(totalCal/targetCal*100));const proPct=targetPro>0?Math.min(100,Math.round(totalPro/targetPro*100)):0;
+    el.style.display='block';el.innerHTML=`<h3>📊 今日营养概览</h3><div class="nutri-bars"><div class="nutri-bar"><span class="label">卡路里</span><div class="bar"><div class="fill" style="width:${calPct}%;background:linear-gradient(90deg,var(--primary),var(--primary-light))"></div></div><span class="val">${totalCal}/${targetCal}</span></div><div class="nutri-bar"><span class="label">蛋白质</span><div class="bar"><div class="fill" style="width:${proPct}%;background:linear-gradient(90deg,var(--accent),var(--accent-light))"></div></div><span class="val">${totalPro}/${targetPro}g</span></div></div>`},
+  mealLabel(m){const s={morning:'早餐',noon:'午餐',evening:'晚餐',snack:'加餐'};return s[m]||m||''},
+  openAddModal(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}const now=new Date();document.getElementById('feed-date').value=this.selectedDate||Store.formatDate(now);document.getElementById('feed-time').value=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;document.getElementById('feed-meal').value=this.guessMeal(now.getHours());document.getElementById('feed-food').value='';document.getElementById('feed-calories').value='';document.getElementById('feed-protein').value='';document.getElementById('feed-note').value='';this.photoData=null;document.getElementById('feed-photo-preview').style.display='none';document.getElementById('feed-photo-btn').style.display='flex';App.openModal('modal-feed')},
+  guessMeal(h){if(h<10)return'morning';if(h<14)return'noon';if(h<21)return'evening';return'snack'},
+  async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.photoData=await API.fileToBase64(f);App.hideLoading();const prev=document.getElementById('feed-photo-preview');prev.src=this.photoData;prev.style.display='block';document.getElementById('feed-photo-btn').style.display='none';e.target.value='';App.showToast('图片已添加')},
+  save(){const p=Store.getCurrentPet();if(!p)return;const food=document.getElementById('feed-food').value.trim();if(!food){App.showToast('请输入食物内容');return}
+    const r={id:Store.genId('feed'),petId:p.id,date:document.getElementById('feed-date').value,time:document.getElementById('feed-time').value,meal:document.getElementById('feed-meal').value,food,calories:parseFloat(document.getElementById('feed-calories').value)||null,protein:parseFloat(document.getElementById('feed-protein').value)||null,note:document.getElementById('feed-note').value.trim(),photo:this.photoData};
+    Store.saveFeedRecord(r);App.closeModal('modal-feed');this.render();this.renderNutriSummary();App.showToast('已记录喂食')}
+};
+
+// ====== GROWTH ALBUM ======
+const GrowthAlbum={
+  photoData:null,
+  init(){document.getElementById('btn-add-photo').addEventListener('click',()=>this.openAddModal());document.getElementById('btn-save-album').addEventListener('click',()=>this.save());document.getElementById('album-photo-btn').addEventListener('click',()=>document.getElementById('album-photo-input').click());document.getElementById('album-photo-input').addEventListener('change',e=>this.handlePhoto(e))},
+  render(){const p=Store.getCurrentPet();const el=document.getElementById('album-timeline');if(!p){el.innerHTML='<div class="empty-state"><span class="empty-icon">📸</span><p>请先选择宠物</p></div>';return}
+    const records=Store.getAlbumRecords(p.id);if(records.length===0){el.innerHTML='<div class="album-empty"><div class="icon">🐱</div><p>还没有成长记录</p><p style="font-size:13px;margin-top:6px">点击右上角「+ 记录」开始记录</p></div>';return}
+    el.innerHTML=records.map((r,i)=>{const age=Store.calcAgeByDate(p.birthDate,r.date);const isLast=i===records.length-1;return`<div class="album-entry"><div class="album-date-col"><div class="age-tag">${age||''}</div><div class="date-circle">${r.date.slice(5)}</div>${!isLast?'<div class="line"></div>':''}</div><div class="album-content">${r.photo?`<img class="album-photo" src="${r.photo}">`:'<div class="album-photo" style="display:flex;align-items:center;justify-content:center;font-size:40px">🐾</div>'}<div class="album-meta">${r.weight?`<div class="weight">⚖️ ${r.weight}kg</div>`:''}${r.note?`<div class="note">${r.note}</div>`:''}<div class="date">📅 ${r.date}</div></div></div></div>`}).join('');
+    el.querySelectorAll('.album-content').forEach(c=>{const del=c.querySelector('.weight');if(del){c.addEventListener('longpress',()=>{})}})},
+  openAddModal(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}document.getElementById('album-date').value=Store.formatDate(new Date());document.getElementById('album-weight').value=p.weight||'';document.getElementById('album-note').value='';this.photoData=null;document.getElementById('album-photo-preview').style.display='none';document.getElementById('album-photo-btn').style.display='flex';App.openModal('modal-album')},
+  async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.photoData=await API.fileToBase64(f);App.hideLoading();const prev=document.getElementById('album-photo-preview');prev.src=this.photoData;prev.style.display='block';document.getElementById('album-photo-btn').style.display='none';e.target.value='';App.showToast('图片已添加')},
+  save(){const p=Store.getCurrentPet();if(!p)return;const date=document.getElementById('album-date').value;if(!date){App.showToast('请选择日期');return}
+    const r={id:Store.genId('album'),petId:p.id,date,weight:parseFloat(document.getElementById('album-weight').value)||null,note:document.getElementById('album-note').value.trim(),photo:this.photoData};
+    Store.saveAlbumRecord(r);if(r.weight){const wr={id:Store.genId('rec'),petId:p.id,type:'weight',date,name:'体重记录',weight:r.weight,note:'成长相册记录'};Store.saveHealthRecord(wr);p.weight=r.weight;Store.savePet(p);Profile.renderPetList()}
+    App.closeModal('modal-album');this.render();App.showToast('成长记录已保存')}
 };
 
 // ====== PRODUCTS ======
@@ -441,7 +685,7 @@ const Hospital={
     if(!navigator.geolocation){s.innerHTML='<p>您的浏览器不支持定位功能</p>';return}
     navigator.geolocation.getCurrentPosition(p=>this.onPos(p,s,l),e=>this.onErr(e,s,l),{enableHighAccuracy:true,timeout:10000,maximumAge:60000})},
   async onPos(pos,s,l){const{latitude:lat,longitude:lng}=pos.coords;s.innerHTML='<p>正在搜索附近宠物医院...</p>';
-    try{const u=`https://restapi.amap.com/v3/place/around?key=39e4d5d8b1d1c3b3c2a1d0f5e6f7a8b9&location=${lng},${lat}&keywords=宠物医院&types=090200&radius=5000&offset=10&output=json`;const r=await fetch(u);const d=await r.json();if(d.status!=='1'||!d.pois||d.pois.length===0){this.fallback(lat,lng,s,l);return}s.innerHTML=`<p>找到 ${d.pois.length} 家宠物医院</p>`;l.innerHTML=d.pois.map(p=>{const dist=p.distance?`${(p.distance/1000).toFixed(1)}km`:'';const nu=`https://uri.amap.com/marker?position=${p.location}&name=${encodeURIComponent(p.name)}`;return `<div class="hospital-card"><div class="name">🏥 ${p.name}</div><div class="address">📍 ${p.address||'地址未知'}</div><div class="meta">${dist?`<span>📏 ${dist}</span>`:''}${p.tel?`<span>📞 ${p.tel}</span>`:''}</div><a href="${nu}" target="_blank" class="nav-link">🧭 导航前往 →</a></div>`}).join('')}catch(e){this.fallback(lat,lng,s,l)}},
+    try{const u=`https://restapi.amap.com/v3/place/around?key=39e4d5d8b1d1c3b3c2a1d0f5e6f7a8b9&location=${lng},${lat}&keywords=宠物医院&types=090200&radius=5000&offset=10&output=json`;const r=await fetch(u);const d=await r.json();if(d.status!='1'||!d.pois||d.pois.length===0){this.fallback(lat,lng,s,l);return}s.innerHTML=`<p>找到 ${d.pois.length} 家宠物医院</p>`;l.innerHTML=d.pois.map(p=>{const dist=p.distance?`${(p.distance/1000).toFixed(1)}km`:'';const nu=`https://uri.amap.com/marker?position=${p.location}&name=${encodeURIComponent(p.name)}`;return`<div class="hospital-card"><div class="name">🏥 ${p.name}</div><div class="address">📍 ${p.address||'地址未知'}</div><div class="meta">${dist?`<span>📏 ${dist}</span>`:''}${p.tel?`<span>📞 ${p.tel}</span>`:''}</div><a href="${nu}" target="_blank" class="nav-link">🧭 导航前往 →</a></div>`}).join('')}catch(e){this.fallback(lat,lng,s,l)}},
   fallback(lat,lng,s,l){const u=`https://uri.amap.com/search?keyword=宠物医院&center=${lng},${lat}&radius=5000&src=petHealth&callnative=1`;s.innerHTML=`<p>已为您打开高德地图搜索附近宠物医院</p><a href="${u}" target="_blank" style="color:var(--primary);font-weight:600;font-size:15px;display:inline-block;margin-top:8px;padding:8px 20px;background:var(--primary-bg);border-radius:8px;">🔍 打开高德地图搜索</a>`;l.innerHTML=''},
   onErr(e,s,l){let m='定位失败';if(e.code===1)m='定位权限被拒绝，请在浏览器设置中允许定位';else if(e.code===2)m='定位不可用';else if(e.code===3)m='定位超时，请重试';s.innerHTML=`<p>${m}</p>`;l.innerHTML=''}
 };
@@ -457,19 +701,19 @@ const HealthRecord={
     Store.saveHealthRecord(r);this.renderRecords();App.renderReminders();App.closeModal('modal-record');App.showToast('已保存')},
   renderRecords(){const p=Store.getCurrentPet();const l=document.getElementById('record-list');if(!p){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     const rs=Store.getHealthRecords(p.id).sort((a,b)=>b.date.localeCompare(a.date));if(rs.length===0){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
-    l.innerHTML=rs.map(r=>{const c=this.typeConfig[r.type]||{emoji:'📋',label:r.type};let mp=[r.date];if(r.nextDate)mp.push('下次: '+r.nextDate);if(r.weight)mp.push(r.weight+'kg');return `<div class="record-card"><div class="icon">${c.emoji}</div><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${r.note?`<div class="note">${r.note}</div>`:''}</div><button class="pet-delete-btn" data-record-id="${r.id}">🗑️</button></div>`}).join('');
+    l.innerHTML=rs.map(r=>{const c=this.typeConfig[r.type]||{emoji:'📋',label:r.type};let mp=[r.date];if(r.nextDate)mp.push('下次: '+r.nextDate);if(r.weight)mp.push(r.weight+'kg');return`<div class="record-card"><div class="icon">${c.emoji}</div><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${r.note?`<div class="note">${r.note}</div>`:''}</div><button class="pet-delete-btn" data-record-id="${r.id}">🗑️</button></div>`}).join('');
     l.querySelectorAll('[data-record-id]').forEach(b=>{b.addEventListener('click',()=>{if(confirm('删除此记录？')){Store.deleteHealthRecord(b.dataset.recordId);this.renderRecords();App.renderReminders();App.showToast('已删除')}})})},
   renderHistory(){const p=Store.getCurrentPet();const l=document.getElementById('history-list');if(!p){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     const cs=Store.getConsultations(p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));if(cs.length===0){l.innerHTML='<div class="empty-state">暂无问诊记录</div>';return}
-    l.innerHTML=cs.map(c=>{const d=c.timestamp.slice(0,16).replace('T',' ');const dg=c.diagnosis;let sb='';if(dg){const cl=dg.severityLevel==='urgent'?'urgent':dg.severityLevel==='soon'?'soon':'observe';const lb=dg.severityLevel==='urgent'?'🔴 紧急就医':dg.severityLevel==='soon'?'🟡 建议就医':'🟢 可观察';sb=`<span class="severity-badge ${cl}">${lb}</span>`}const ca=dg?.possibleCauses?.join('、')||'无';return `<div class="history-card"><div class="date">${d}</div><div class="summary">可能原因：${ca}</div>${sb}</div>`}).join('')},
+    l.innerHTML=cs.map(c=>{const d=c.timestamp.slice(0,16).replace('T',' ');const dg=c.diagnosis;let sb='';if(dg){const cl=dg.severityLevel==='urgent'?'urgent':dg.severityLevel==='soon'?'soon':'observe';const lb=dg.severityLevel==='urgent'?'🔴 紧急就医':dg.severityLevel==='soon'?'🟡 建议就医':'🟢 可观察';sb=`<span class="severity-badge ${cl}">${lb}</span>`}const ca=dg?.possibleCauses?.join('、')||'无';return`<div class="history-card"><div class="date">${d}</div><div class="summary">可能原因：${ca}</div>${sb}</div>`}).join('')},
   renderWeightChart(){const p=Store.getCurrentPet();const c=document.getElementById('weight-chart');if(!p){c.innerHTML='<div class="empty-state">暂无体重数据</div>';return}
     const rs=Store.getHealthRecords(p.id).filter(r=>r.type==='weight'&&r.weight).sort((a,b)=>a.date.localeCompare(b.date));if(rs.length===0){c.innerHTML='<div class="empty-state">暂无体重数据<div><p style="font-size:13px;margin-top:8px;">在健康记录中添加体重记录即可看到趋势</p></div></div>';return}
     if(rs.length===1){c.innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:32px;font-weight:700;color:var(--primary);">${rs[0].weight}<span style="font-size:16px;color:#999;"> kg</span></div><div style="font-size:13px;color:#999;margin-top:4px;">${rs[0].date}</div></div>`;return}
     const ws=rs.map(r=>r.weight),ds=rs.map(r=>r.date.slice(5));const mx=Math.max(...ws)*1.1,mn=Math.min(...ws)*0.9,rng=mx-mn||1;const W=300,H=150,pad=30,cw=W-pad*2,ch=H-pad*2;
     const pts=ws.map((w,i)=>({x:pad+(i/(ws.length-1))*cw,y:pad+ch-((w-mn)/rng)*ch,val:w}));const pd=pts.map((p,i)=>`${i===0?'M':'L'}${p.x},${p.y}`).join(' ');const ad=`${pd} L${pts[pts.length-1].x},${pad+ch} L${pts[0].x},${pad+ch} Z`;
     let lb=ds.map((d,i)=>{if(ds.length>6&&i%2!==0)return'';return`<text x="${pts[i].x}" y="${H-8}" text-anchor="middle" fill="#999" font-size="9">${d}</text>`}).join('');
-    let dt=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#00897b"/><text x="${p.x}" y="${p.y-6}" text-anchor="middle" fill="#00897b" font-size="9">${p.val}kg</text>`).join('');
-    c.innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:200px;"><path d="${ad}" fill="rgba(0,137,123,0.1)"/><path d="${pd}" fill="none" stroke="#00897b" stroke-width="2"/>${dt}${lb}</svg>`},
+    let dt=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#5EC8B6"/><text x="${p.x}" y="${p.y-6}" text-anchor="middle" fill="#5EC8B6" font-size="9">${p.val}kg</text>`).join('');
+    c.innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:200px;"><path d="${ad}" fill="rgba(94,200,182,0.1)"/><path d="${pd}" fill="none" stroke="#5EC8B6" stroke-width="2"/>${dt}${lb}</svg>`},
   renderAll(){this.renderRecords();this.renderHistory();this.renderWeightChart()},
   getReminders(){const ps=Store.getPets();const rs=[];const today=new Date();
     const inDays=d=>{if(!d)return null;return Math.ceil((new Date(d)-today)/(1000*60*60*24))};
@@ -478,14 +722,13 @@ const HealthRecord={
 
 // ====== APP ======
 const App={
-  init(){this.bindEvents();Profile.renderPetList();this.renderReminders();this.updateChatPetInfo();HealthRecord.init();Consultation.init();
-    if(Store.getCurrentPet()){Diet.renderLatest();HealthRecord.renderAll()}},
+  init(){this.bindEvents();Profile.renderPetList();this.renderReminders();this.updateChatPetInfo();HealthRecord.init();Consultation.init();FeedCalendar.init();GrowthAlbum.init();
+    if(Store.getCurrentPet()){HealthRecord.renderAll();FeedCalendar.render();GrowthAlbum.render()}},
   bindEvents(){
     document.querySelectorAll('.nav-item').forEach(i=>{i.addEventListener('click',()=>this.switchPage(i.dataset.page))});
     document.querySelectorAll('.qa-card[data-page]').forEach(c=>{c.addEventListener('click',()=>{this.switchPage(c.dataset.page);if(c.dataset.page==='consultation')Consultation.checkAndStart()})});
     document.getElementById('btn-add-pet').addEventListener('click',()=>Profile.openAddModal());
     document.getElementById('btn-save-pet').addEventListener('click',()=>Profile.save());
-    document.getElementById('btn-generate-diet').addEventListener('click',()=>Diet.generate());
     document.getElementById('btn-add-record').addEventListener('click',()=>HealthRecord.openAddModal());
     document.getElementById('btn-save-record').addEventListener('click',()=>HealthRecord.save());
     document.getElementById('qa-products').addEventListener('click',()=>{this.openModal('modal-products');Products.renderLatest()});
@@ -497,7 +740,10 @@ const App={
     document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)this.closeModal(o.id)})})},
   switchPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const pg=document.getElementById('page-'+name);if(pg)pg.classList.add('active');const ni=document.querySelector(`.nav-item[data-page="${name}"]`);if(ni)ni.classList.add('active');
     if(name==='consultation'){this.updateChatPetInfo();setTimeout(()=>{const c=document.getElementById('chat-messages');if(c)c.scrollTop=c.scrollHeight},100)}
-    if(name==='diet')Diet.renderLatest();if(name==='health')HealthRecord.renderAll();if(name==='dashboard'){Profile.renderPetList();this.renderReminders()}},
+    if(name==='calendar')FeedCalendar.render();
+    if(name==='album')GrowthAlbum.render();
+    if(name==='health')HealthRecord.renderAll();
+    if(name==='dashboard'){Profile.renderPetList();this.renderReminders()}},
   updateChatPetInfo(){const p=Store.getCurrentPet();const el=document.getElementById('chat-pet-info');if(p)el.innerHTML=`<span class="selected">${Profile.getEmoji(p.type)} ${p.name}</span> · ${Store.calcAge(p.birthDate)} · ${p.weight||'?'}kg`;else el.textContent='请先选择宠物'},
   renderReminders(){const rs=HealthRecord.getReminders();const el=document.getElementById('reminder-list');if(rs.length===0){el.innerHTML='<div class="empty-state" style="padding:20px;font-size:13px;">暂无提醒</div>';return}
     el.innerHTML=rs.slice(0,5).map(r=>`<div class="reminder-card"><span class="icon">${r.emoji}</span><div class="info"><div class="title">${r.title}</div><div class="desc">${r.desc}</div></div></div>`).join('')},
@@ -507,6 +753,8 @@ const App={
   hideLoading(){document.getElementById('loading-overlay').classList.remove('active')},
   showToast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(this._tt);this._tt=setTimeout(()=>t.classList.remove('show'),dur)}
 };
+// Add calcAgeByDate to Store
+Store.calcAgeByDate=function(b,d){if(!b||!d)return'';const bd=new Date(b);const dd=new Date(d);const m=(dd.getFullYear()-bd.getFullYear())*12+(dd.getMonth()-bd.getMonth());if(dd.getDate()<bd.getDate())m--;if(m<12)return m+'月龄';const y=Math.floor(m/12);const r=m%12;return r>0?y+'岁'+r+'月':y+'岁'};
 document.addEventListener('DOMContentLoaded',()=>App.init());
 </script>
 </body>
