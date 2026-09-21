@@ -324,6 +324,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <section class="page" id="page-calendar">
       <div class="page-inner">
         <div class="section-header"><h2>喂食日历</h2><button class="btn-text" id="btn-gen-diet">生成方案</button></div>
+        <div id="diet-empty-state" style="display:none"></div>
         <div class="calendar-wrap" id="calendar-wrap"></div>
         <div class="nutri-summary" id="nutri-summary" style="display:none"></div>
         <div class="feed-day-panel" id="feed-day-panel"></div>
@@ -367,14 +368,12 @@ textarea.form-input{resize:vertical;min-height:60px}
         <div class="form-group"><label>名称</label><input type="text" class="form-input" id="pet-name" placeholder="如：小橘"></div>
         <div class="form-group"><label>宠物类型</label><div class="option-grid" id="pet-type-grid"></div></div>
         <div class="form-group"><label>品种</label><input type="text" class="form-input" id="pet-breed" placeholder="如：橘猫、金毛、荷兰兔"></div>
+        <div class="form-group"><label>生日</label><input type="date" class="form-input" id="pet-birthdate" style="width:100%"></div>
         <div class="form-row">
-          <div class="form-group"><label>生日</label><input type="date" class="form-input" id="pet-birthdate"></div>
           <div class="form-group"><label>性别</label><select class="form-input" id="pet-gender"><option value="male">公</option><option value="female">母</option></select></div>
-        </div>
-        <div class="form-row">
           <div class="form-group"><label>体重(kg)</label><input type="number" class="form-input" id="pet-weight" placeholder="4.5" step="0.1"></div>
-          <div class="form-group"><label>活动量</label><select class="form-input" id="pet-activity"><option value="low">低</option><option value="medium" selected>中</option><option value="high">高</option></select></div>
         </div>
+        <div class="form-group"><label>活动量</label><select class="form-input" id="pet-activity"><option value="low">低</option><option value="medium" selected>中</option><option value="high">高</option></select></div>
         <div class="form-group"><label>绝育状态</label><select class="form-input" id="pet-neutered"><option value="false">未绝育</option><option value="true">已绝育</option></select></div>
         <div class="form-group"><label>既往病史</label><textarea class="form-input" id="pet-medical-history" rows="2" placeholder="如：曾患猫癣、肠胃敏感..."></textarea></div>
         <div class="form-group"><label>过敏史</label><input type="text" class="form-input" id="pet-allergies" placeholder="如：鸡肉过敏"></div>
@@ -606,7 +605,9 @@ const FeedCalendar={
     document.getElementById('btn-save-feed').addEventListener('click',()=>this.save());
     document.getElementById('feed-photo-btn').addEventListener('click',()=>document.getElementById('feed-photo-input').click());
     document.getElementById('feed-photo-input').addEventListener('change',e=>this.handlePhoto(e))},
-  render(){const p=Store.getCurrentPet();const el=document.getElementById('calendar-wrap');if(!p){el.innerHTML='<div class="empty-state"><span class="empty-icon">📅</span><p>请先选择宠物</p></div>';document.getElementById('feed-day-panel').innerHTML='';document.getElementById('nutri-summary').style.display='none';document.getElementById('add-feed-fab').style.display='none';return}
+  render(){const p=Store.getCurrentPet();const el=document.getElementById('calendar-wrap');const emptyEl=document.getElementById('diet-empty-state');if(!p){el.innerHTML='';emptyEl.style.display='block';emptyEl.innerHTML='<div class="empty-state"><span class="empty-icon">📅</span><p>请先添加宠物</p></div>';document.getElementById('feed-day-panel').innerHTML='';document.getElementById('nutri-summary').style.display='none';document.getElementById('add-feed-fab').style.display='none';return}
+    const plan=Store.getLatestDietPlan(p.id);if(!plan){el.innerHTML='';emptyEl.style.display='block';emptyEl.innerHTML='<div style="background:var(--card-bg);border-radius:var(--radius);padding:28px 20px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:44px;margin-bottom:12px">🍽️</div><p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px">还没有饮食方案</p><p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">点击下方按钮，AI会根据'+Profile.getEmoji(p.type)+' '+p.name+'的档案和健康状况<br>生成个性化每日饮食计划</p><button class="btn-primary" style="width:auto;padding:10px 28px;flex:none" onclick="Diet.generate()">✨ 生成饮食方案</button></div>';document.getElementById('feed-day-panel').innerHTML='';document.getElementById('nutri-summary').style.display='none';document.getElementById('add-feed-fab').style.display='none';return}
+    emptyEl.style.display='none';
     document.getElementById('add-feed-fab').style.display='flex';
     const y=this.currentDate.getFullYear(),m=this.currentDate.getMonth();
     const monthNames=['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
