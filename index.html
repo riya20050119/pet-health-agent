@@ -586,8 +586,8 @@ const Diet={
   async generate(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');App.switchPage('dashboard');return}await this.gen(p.id)},
   async generateFromConsultation(cid){const c=Store.getConsultations().find(x=>x.id===cid);if(!c){App.showToast('未找到问诊记录');return}Store.setCurrentPetId(c.petId);await this.gen(c.petId,c)},
   async gen(pid,co){const p=Store.getPet(pid);if(!p)return;const c=co||Store.getLatestConsultation(pid);App.showLoading('正在生成饮食方案...');
-    try{const r=await API.chatWithSystem(Prompts.diet(p,c),[{role:'user',content:'请生成饮食方案'}]);const plan=API.parseJSON(r);if(!plan){App.showToast('AI返回格式异常，请重试');App.hideLoading();return}
-      const dp={id:Store.genId('diet'),petId:pid,consultationId:c?.id||null,date:Store.formatDate(new Date()),...plan};Store.saveDietPlan(dp);this.renderModal(dp);App.openModal('modal-diet');App.showToast('饮食方案已生成')}catch(e){App.showToast('生成失败: '+e.message)}finally{App.hideLoading()}},
+    try{const r=await API.chatWithSystem(Prompts.diet(p,c),[{role:'user',content:'请生成饮食方案'}]);console.log('Diet API response:',r);const plan=API.parseJSON(r);if(!plan){console.error('Parse failed, raw:',r);App.showToast('AI返回格式异常，请重试');App.hideLoading();return}
+      const dp={id:Store.genId('diet'),petId:pid,consultationId:c?.id||null,date:Store.formatDate(new Date()),...plan};Store.saveDietPlan(dp);this.renderModal(dp);App.openModal('modal-diet');FeedCalendar.render();App.showToast('饮食方案已生成')}catch(e){console.error('Diet gen error:',e);App.showToast('生成失败: '+e.message)}finally{App.hideLoading()}},
   renderModal(plan){const el=document.getElementById('diet-modal-body');if(!plan){el.innerHTML='<p>暂无饮食方案</p>';return}
     let ah='';if(plan.healthAdjustments&&plan.healthAdjustments.length>0)ah='<div class="diet-warning">'+plan.healthAdjustments.map(a=>`⚠️ ${a.reason||a.factor}：${a.adjustment}`).join('<br>')+'</div>';
     let mh='';if(plan.meals&&plan.meals.length>0)mh=plan.meals.map(m=>`<div class="meal-card"><div class="meal-time">⏰ ${m.time}</div><div class="meal-content">${m.food}</div>${m.adjustment?`<div class="meal-adjustment">🔧 ${m.adjustment}</div>`:''}</div>`).join('');
@@ -756,6 +756,7 @@ const App={
 };
 // Add calcAgeByDate to Store
 Store.calcAgeByDate=function(b,d){if(!b||!d)return'';const bd=new Date(b);const dd=new Date(d);const m=(dd.getFullYear()-bd.getFullYear())*12+(dd.getMonth()-bd.getMonth());if(dd.getDate()<bd.getDate())m--;if(m<12)return m+'月龄';const y=Math.floor(m/12);const r=m%12;return r>0?y+'岁'+r+'月':y+'岁'};
+window.Diet=Diet;window.App=App;window.Profile=Profile;window.Store=Store;window.FeedCalendar=FeedCalendar;window.GrowthAlbum=GrowthAlbum;
 document.addEventListener('DOMContentLoaded',()=>App.init());
 </script>
 </body>
