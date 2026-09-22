@@ -762,17 +762,15 @@ const VisitRecord={
     const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}
     if(!VR._bound)VR.init();
     VR.photoData=null;
-    document.getElementById('visit-photo-preview').style.display='none';
-    document.getElementById('visit-photo-btn').style.display='flex';
-    document.getElementById('visit-date').value=Store.formatDate(new Date());
-    document.getElementById('visit-hospital').value='';
-    document.getElementById('visit-diagnosis').value='';
-    document.getElementById('visit-medications').value='';
-    document.getElementById('visit-advice').value='';
-    document.getElementById('visit-next-date').value='';
-    document.getElementById('visit-weight').value='';
-    document.getElementById('visit-scan-status').style.display='none';
-    document.getElementById('modal-visit').classList.add('active');
+    const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val};
+    const show=(id,s)=>{const el=document.getElementById(id);if(el)el.style.display=s};
+    show('visit-photo-preview','none');show('visit-photo-btn','flex');
+    set('visit-date',Store.formatDate(new Date()));
+    set('visit-hospital','');set('visit-diagnosis','');set('visit-medications','');set('visit-advice','');
+    set('visit-next-date','');set('visit-weight','');
+    show('visit-scan-status','none');
+    const mv=document.getElementById('modal-visit');if(mv)mv.classList.add('active');
+    else console.error('modal-visit element not found');
   },
   async handlePhoto(e){
     const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}
@@ -783,20 +781,16 @@ const VisitRecord={
   async scan(){
     const p=Store.getCurrentPet();if(!p)return;
     if(!this.photoData){App.showToast('请先上传病历照片');return}
-    const st=document.getElementById('visit-scan-status');
+    const st=document.getElementById('visit-scan-status');if(!st){App.showToast('页面元素缺失');return}
     st.style.display='block';st.style.background='var(--primary-bg)';st.textContent='🤖 AI正在识别病历内容...';
     App.showLoading('AI扫描病历中...');
     try{
       const r=await API.analyzeImage(this.photoData,Prompts.visitRecord(p));
       const data=API.parseJSON(r);
       if(!data){st.style.background='#FFF0F0';st.textContent='⚠️ 识别失败，请手动填写或重拍';App.hideLoading();return}
-      if(data.date)document.getElementById('visit-date').value=data.date;
-      if(data.hospital)document.getElementById('visit-hospital').value=data.hospital;
-      if(data.diagnosis)document.getElementById('visit-diagnosis').value=data.diagnosis;
-      if(data.medications)document.getElementById('visit-medications').value=data.medications;
-      if(data.advice)document.getElementById('visit-advice').value=data.advice;
-      if(data.nextDate)document.getElementById('visit-next-date').value=data.nextDate;
-      if(data.weight)document.getElementById('visit-weight').value=data.weight;
+      const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val};
+      set('visit-date',data.date);set('visit-hospital',data.hospital);set('visit-diagnosis',data.diagnosis);
+      set('visit-medications',data.medications);set('visit-advice',data.advice);set('visit-next-date',data.nextDate);set('visit-weight',data.weight);
       st.style.background='var(--primary-bg)';st.textContent='✅ AI识别完成，请核对信息后保存';
       App.showToast('识别完成');
       this._healthUpdate=data.healthUpdate||'';
@@ -805,13 +799,12 @@ const VisitRecord={
   },
   save(){
     const p=Store.getCurrentPet();if(!p)return;
-    const date=document.getElementById('visit-date').value;if(!date){App.showToast('请选择就诊日期');return}
-    const hospital=document.getElementById('visit-hospital').value.trim();
-    const diagnosis=document.getElementById('visit-diagnosis').value.trim();
-    const medications=document.getElementById('visit-medications').value.trim();
-    const advice=document.getElementById('visit-advice').value.trim();
-    const nextDate=document.getElementById('visit-next-date').value||null;
-    const weight=document.getElementById('visit-weight').value?parseFloat(document.getElementById('visit-weight').value):null;
+    const get=(id)=>{const el=document.getElementById(id);return el?el.value.trim():''};
+    const date=get('visit-date');if(!date){App.showToast('请选择就诊日期');return}
+    const hospital=get('visit-hospital');const diagnosis=get('visit-diagnosis');
+    const medications=get('visit-medications');const advice=get('visit-advice');
+    const nextDateEl=document.getElementById('visit-next-date');const nextDate=nextDateEl?nextDateEl.value||null:null;
+    const weightEl=document.getElementById('visit-weight');const weight=weightEl&&weightEl.value?parseFloat(weightEl.value):null;
     const r={id:Store.genId('visit'),petId:p.id,type:'visit',date,name:diagnosis?`${hospital}就诊(${diagnosis})`:'就诊记录',nextDate,weight,hospital,diagnosis,medications,advice,photo:this.photoData,note:''};
     Store.saveHealthRecord(r);
     if(this._healthUpdate){let mh=p.medicalHistory||'';if(mh&&!mh.endsWith('; '))mh+='; ';mh+=this._healthUpdate;p.medicalHistory=mh;Store.savePet(p);Profile.renderPetList()}
