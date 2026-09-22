@@ -340,7 +340,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <!-- Health Records -->
     <section class="page" id="page-health">
       <div class="page-inner">
-        <div class="section-header"><h2>健康档案</h2><button class="btn-text" id="btn-add-record">+ 记录</button></div>
+        <div class="section-header"><h2>健康档案</h2><div style="display:flex;gap:8px"><button class="btn-text" id="btn-visit" style="color:var(--primary)">📋 拍病历</button><button class="btn-text" id="btn-add-record">+ 记录</button></div></div>
         <div class="health-tabs">
           <button class="health-tab active" data-tab="records">健康记录</button>
           <button class="health-tab" data-tab="history">问诊历史</button>
@@ -388,7 +388,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <div class="modal">
       <div class="modal-header"><h3>添加健康记录</h3><button class="modal-close" data-close="modal-record">✕</button></div>
       <div class="modal-body">
-        <div class="form-group"><label>记录类型</label><select class="form-input" id="record-type"><option value="vaccine">疫苗</option><option value="deworm">驱虫</option><option value="exam">体检</option><option value="weight">体重</option></select></div>
+        <div class="form-group"><label>记录类型</label><select class="form-input" id="record-type"><option value="vaccine">疫苗</option><option value="deworm">驱虫</option><option value="exam">体检</option><option value="weight">体重</option><option value="visit">就诊</option></select></div>
         <div class="form-group"><label>日期</label><input type="date" class="form-input" id="record-date"></div>
         <div class="form-group" id="record-name-group"><label>名称</label><input type="text" class="form-input" id="record-name" placeholder="如：狂犬疫苗、体外驱虫"></div>
         <div class="form-group" id="record-next-group"><label>下次日期(可选)</label><input type="date" class="form-input" id="record-next-date"></div>
@@ -396,6 +396,26 @@ textarea.form-input{resize:vertical;min-height:60px}
         <div class="form-group"><label>备注</label><textarea class="form-input" id="record-note" rows="2" placeholder="..."></textarea></div>
       </div>
       <div class="modal-footer"><button class="btn-secondary" data-close="modal-record">取消</button><button class="btn-primary" id="btn-save-record">保存</button></div>
+    </div>
+  </div>
+
+  <!-- Modal: Visit Record (拍病历) -->
+  <div class="modal-overlay" id="modal-visit">
+    <div class="modal" style="max-width:420px">
+      <div class="modal-header"><h3>📋 拍病历录入</h3><button class="modal-close" data-close="modal-visit">✕</button></div>
+      <div class="modal-body" style="max-height:70vh;overflow-y:auto">
+        <div class="form-group"><label>拍照/上传病历</label><input type="file" id="visit-photo-input" accept="image/*" style="display:none"><div class="photo-upload-btn" id="visit-photo-btn" style="height:120px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer">📷</div><img class="photo-preview" id="visit-photo-preview" style="display:none;border-radius:12px"></div>
+        <div class="form-group"><button class="btn-primary" id="btn-scan-visit" style="width:100%;padding:12px">🤖 AI扫描病历</button></div>
+        <div id="visit-scan-status" style="display:none;padding:10px;border-radius:8px;background:var(--primary-bg);font-size:13px;text-align:center;margin-bottom:12px"></div>
+        <div class="form-group"><label>就诊日期</label><input type="date" class="form-input" id="visit-date"></div>
+        <div class="form-group"><label>就诊医院</label><input type="text" class="form-input" id="visit-hospital" placeholder="如：瑞鹏宠物医院"></div>
+        <div class="form-group"><label>诊断结果</label><textarea class="form-input" id="visit-diagnosis" rows="2" placeholder="如：上呼吸道感染"></textarea></div>
+        <div class="form-group"><label>用药/处方</label><textarea class="form-input" id="visit-medications" rows="2" placeholder="如：阿莫西林 50mg 每日两次"></div>
+        <div class="form-group"><label>医嘱/注意事项</label><textarea class="form-input" id="visit-advice" rows="2" placeholder="如：7天后复诊、忌食油腻"></textarea></div>
+        <div class="form-group"><label>复诊日期(可选)</label><input type="date" class="form-input" id="visit-next-date"></div>
+        <div class="form-group"><label>本次体重(kg)(可选)</label><input type="number" class="form-input" id="visit-weight" step="0.1" placeholder="4.5"></div>
+      </div>
+      <div class="modal-footer"><button class="btn-secondary" data-close="modal-visit">取消</button><button class="btn-primary" id="btn-save-visit">保存就诊记录</button></div>
     </div>
   </div>
 
@@ -529,7 +549,8 @@ const Prompts={
   consultation(p){return`你是"宠医智伴"，一位专业、温和的宠物健康顾问AI。你正在为以下宠物进行问诊：\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n问诊规则：\n1.模拟真实兽医问诊流程：主诉→追问现病史→鉴别诊断→建议\n2.每次只问1-2个问题\n3.语气亲切温和，称呼宠物名字\n4.如果用户上传了照片，分析可能的外观异常\n5.信息不足时继续追问，不要急于下结论\n6.症状较轻给居家护理建议，需要就医时明确告知\n\n收集到足够信息后，输出最终诊断分析，格式如下：\n\n【可能原因】\n1.xxx\n2.xxx\n3.xxx\n\n【严重程度】\n（🟢可观察|🟡建议就医|🔴紧急就医）\n\n【居家处理建议】\n-xxx\n\n【就医前准备】\n-xxx\n\n【健康调整因子】\n列出英文标识符，如：diabetes_risk,kidney_risk,obesity,food_allergy,urinary_issue,digestive_issue,skin_issue\n如无则写：none\n\n请用中文回复。`},
   image(p,desc){return`你是宠物健康顾问。请分析这张宠物照片。\n\n宠物信息：${p.name}，${p.type==='cat'?'猫':p.type==='dog'?'狗':p.type}，${p.breed||'品种未知'}，${Store.calcAge(p.birthDate)}，体重${p.weight||'未知'}kg\n\n用户描述：${desc||'无'}\n\n请观察是否有以下异常：皮肤红肿/脱毛/皮屑、眼睛分泌物/红肿、耳朵分泌物、口腔牙龈、毛发粗糙、体态消瘦或肥胖等。\n用简洁中文描述你观察到的，并给出初步判断。`},
   diet(p,c){return`你是"宠医智伴"的饮食方案引擎。请为以下宠物生成个性化每日饮食方案。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n最近问诊结果：\n${c?JSON.stringify(c.diagnosis||c,null,2):'无最近问诊记录'}\n\n健康调整因子：${c?.diagnosis?.healthFactors?.join(', ')||'none'}\n\n请根据品种营养需求、年龄阶段、体重热量(RER=70×体重^0.75)、健康调整因子生成方案。\n\n输出格式(JSON)：\n{"dailyCalorieTarget":数字,"healthAdjustments":[{"factor":"diabetes_risk","adjustment":"碳水减少40%","reason":"糖尿病风险"}],"meals":[{"time":"08:00","food":"具体食物和份量","calories":数字,"protein":数字,"adjustment":"调整说明或空"},{"time":"18:00","food":"具体食物和份量","calories":数字,"protein":数字,"adjustment":"调整说明或空"}],"forbiddenFoods":["食物1","食物2"],"nutritionRatio":{"protein":数字,"fat":数字,"carbs":数字},"summary":"一句话总结"}\n\n规则：食物推荐要具体，有健康调整因子时每个meal的adjustment必须填写，禁忌食物包含该物种常见禁忌。只输出JSON。`},
-  products(p,d,c){return`你是"宠医智伴"的产品推荐引擎。请根据宠物健康状况推荐产品。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n饮食方案：\n${d?JSON.stringify(d,null,2):'无'}\n\n健康状态：\n${c?.diagnosis?JSON.stringify(c.diagnosis,null,2):'无问诊记录'}\n\n推荐规则：1.基于饮食方案推荐粮食/零食/保健品 2.有健康问题自动过滤不适产品 3.每推荐含名称/理由/价格/适用说明 4.推荐3-5个\n\n输出格式(JSON数组)：\n[{"name":"名称","category":"主粮/零食/保健品","reason":"推荐理由","priceRange":"50-100元","suitableFor":"适用说明"}]\n\n只输出JSON。`}
+  products(p,d,c){return`你是"宠医智伴"的产品推荐引擎。请根据宠物健康状况推荐产品。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n饮食方案：\n${d?JSON.stringify(d,null,2):'无'}\n\n健康状态：\n${c?.diagnosis?JSON.stringify(c.diagnosis,null,2):'无问诊记录'}\n\n推荐规则：1.基于饮食方案推荐粮食/零食/保健品 2.有健康问题自动过滤不适产品 3.每推荐含名称/理由/价格/适用说明 4.推荐3-5个\n\n输出格式(JSON数组)：\n[{"name":"名称","category":"主粮/零食/保健品","reason":"推荐理由","priceRange":"50-100元","suitableFor":"适用说明"}]\n\n只输出JSON。`},
+  visitRecord(p){return`你是"宠医智伴"的病历识别引擎。请仔细识别这张宠物就诊单/病历/处方单的照片，提取关键信息。\n\n宠物信息：${p.name}，${p.type==='cat'?'猫':p.type==='dog'?'狗':p.type}，品种${p.breed||'未知'}\n\n请识别以下内容并输出JSON格式：\n{"date":"就诊日期(YYYY-MM-DD格式，识别不到则用今天)","hospital":"就诊医院名称","diagnosis":"诊断结果","medications":"用药/处方内容","advice":"医嘱和注意事项","nextDate":"复诊日期(YYYY-MM-DD格式，无则留空)","weight":"就诊时称量的体重(kg数字，无则留空)","healthUpdate":"需要更新到宠物既往病史的简要描述，如'确诊上呼吸道感染'或'确诊肠胃炎'，无则留空"}\n\n识别规则：\n1.仔细阅读手写或打印的文字\n2.日期统一转成YYYY-MM-DD\n3.药物名称、剂量要准确\n4.只输出JSON，不要输出其他文字`}
 };
 
 // ====== PROFILE ======
@@ -693,7 +714,7 @@ const Hospital={
 
 // ====== HEALTH RECORD ======
 const HealthRecord={
-  typeConfig:{vaccine:{emoji:'💉',label:'疫苗'},deworm:{emoji:'🪱',label:'驱虫'},exam:{emoji:'🩺',label:'体检'},weight:{emoji:'⚖️',label:'体重'}},
+  typeConfig:{vaccine:{emoji:'💉',label:'疫苗'},deworm:{emoji:'🪱',label:'驱虫'},exam:{emoji:'🩺',label:'体检'},weight:{emoji:'⚖️',label:'体重'},visit:{emoji:'📋',label:'就诊'}},
   init(){document.getElementById('record-type').addEventListener('change',e=>{const w=e.target.value==='weight';document.getElementById('record-name-group').style.display=w?'none':'';document.getElementById('record-next-group').style.display=w?'none':'';document.getElementById('record-weight-group').style.display=w?'':'none'});
     document.querySelectorAll('.health-tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.health-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('health-records-tab').style.display=t.dataset.tab==='records'?'':'none';document.getElementById('health-history-tab').style.display=t.dataset.tab==='history'?'':'none';document.getElementById('health-weight-tab').style.display=t.dataset.tab==='weight'?'':'none'})})},
   openAddModal(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}document.getElementById('record-type').value='vaccine';document.getElementById('record-date').value=Store.formatDate(new Date());document.getElementById('record-name').value='';document.getElementById('record-next-date').value='';document.getElementById('record-weight').value='';document.getElementById('record-note').value='';document.getElementById('record-name-group').style.display='';document.getElementById('record-next-group').style.display='';document.getElementById('record-weight-group').style.display='none';App.openModal('modal-record')},
@@ -702,7 +723,9 @@ const HealthRecord={
     Store.saveHealthRecord(r);this.renderRecords();App.renderReminders();App.closeModal('modal-record');App.showToast('已保存')},
   renderRecords(){const p=Store.getCurrentPet();const l=document.getElementById('record-list');if(!p){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     const rs=Store.getHealthRecords(p.id).sort((a,b)=>b.date.localeCompare(a.date));if(rs.length===0){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
-    l.innerHTML=rs.map(r=>{const c=this.typeConfig[r.type]||{emoji:'📋',label:r.type};let mp=[r.date];if(r.nextDate)mp.push('下次: '+r.nextDate);if(r.weight)mp.push(r.weight+'kg');return`<div class="record-card"><div class="icon">${c.emoji}</div><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${r.note?`<div class="note">${r.note}</div>`:''}</div><button class="pet-delete-btn" data-record-id="${r.id}">🗑️</button></div>`}).join('');
+    l.innerHTML=rs.map(r=>{const c=this.typeConfig[r.type]||{emoji:'📋',label:r.type};let mp=[r.date];if(r.nextDate)mp.push('下次: '+r.nextDate);if(r.weight)mp.push(r.weight+'kg');if(r.hospital)mp.push(r.hospital);
+      let extra='';if(r.type==='visit'){if(r.diagnosis)extra+=`<div class="note" style="color:var(--primary);font-weight:500">诊断：${r.diagnosis}</div>`;if(r.medications)extra+=`<div class="note">用药：${r.medications}</div>`;if(r.advice)extra+=`<div class="note">医嘱：${r.advice}</div>`}else if(r.note)extra=`<div class="note">${r.note}</div>`;
+      return`<div class="record-card"><div class="icon">${c.emoji}</div><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${extra}</div><button class="pet-delete-btn" data-record-id="${r.id}">🗑️</button></div>`}).join('');
     l.querySelectorAll('[data-record-id]').forEach(b=>{b.addEventListener('click',()=>{if(confirm('删除此记录？')){Store.deleteHealthRecord(b.dataset.recordId);this.renderRecords();App.renderReminders();App.showToast('已删除')}})})},
   renderHistory(){const p=Store.getCurrentPet();const l=document.getElementById('history-list');if(!p){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     const cs=Store.getConsultations(p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));if(cs.length===0){l.innerHTML='<div class="empty-state">暂无问诊记录</div>';return}
@@ -721,9 +744,79 @@ const HealthRecord={
     ps.forEach(p=>{Store.getHealthRecords(p.id).forEach(r=>{if(r.nextDate){const days=inDays(r.nextDate);if(days!==null&&days<=30){const c=this.typeConfig[r.type]||{emoji:'📋',label:'记录'};rs.push({petName:p.name,emoji:c.emoji,title:days<0?`${r.name||c.label}已到期`:`${r.name||c.label}还有${days}天到期`,desc:`${p.name} · ${r.nextDate}`,days})}}})});return rs.sort((a,b)=>a.days-b.days)}
 };
 
-// ====== APP ======
+// ====== VISIT RECORD (拍病历) ======
+const VisitRecord={
+  photoData:null,
+  init(){
+    document.getElementById('visit-photo-btn').addEventListener('click',()=>document.getElementById('visit-photo-input').click());
+    document.getElementById('visit-photo-input').addEventListener('change',e=>this.handlePhoto(e));
+    document.getElementById('btn-scan-visit').addEventListener('click',()=>this.scan());
+    document.getElementById('btn-save-visit').addEventListener('click',()=>this.save());
+  },
+  openModal(){
+    const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}
+    this.photoData=null;
+    document.getElementById('visit-photo-preview').style.display='none';
+    document.getElementById('visit-photo-btn').style.display='flex';
+    document.getElementById('visit-date').value=Store.formatDate(new Date());
+    document.getElementById('visit-hospital').value='';
+    document.getElementById('visit-diagnosis').value='';
+    document.getElementById('visit-medications').value='';
+    document.getElementById('visit-advice').value='';
+    document.getElementById('visit-next-date').value='';
+    document.getElementById('visit-weight').value='';
+    document.getElementById('visit-scan-status').style.display='none';
+    App.openModal('modal-visit');
+  },
+  async handlePhoto(e){
+    const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}
+    App.showLoading('处理图片...');this.photoData=await API.fileToBase64(f);App.hideLoading();
+    const prev=document.getElementById('visit-photo-preview');prev.src=this.photoData;prev.style.display='block';
+    document.getElementById('visit-photo-btn').style.display='none';e.target.value='';App.showToast('图片已添加，点击AI扫描');
+  },
+  async scan(){
+    const p=Store.getCurrentPet();if(!p)return;
+    if(!this.photoData){App.showToast('请先上传病历照片');return}
+    const st=document.getElementById('visit-scan-status');
+    st.style.display='block';st.style.background='var(--primary-bg)';st.textContent='🤖 AI正在识别病历内容...';
+    App.showLoading('AI扫描病历中...');
+    try{
+      const r=await API.analyzeImage(this.photoData,Prompts.visitRecord(p));
+      const data=API.parseJSON(r);
+      if(!data){st.style.background='#FFF0F0';st.textContent='⚠️ 识别失败，请手动填写或重拍';App.hideLoading();return}
+      if(data.date)document.getElementById('visit-date').value=data.date;
+      if(data.hospital)document.getElementById('visit-hospital').value=data.hospital;
+      if(data.diagnosis)document.getElementById('visit-diagnosis').value=data.diagnosis;
+      if(data.medications)document.getElementById('visit-medications').value=data.medications;
+      if(data.advice)document.getElementById('visit-advice').value=data.advice;
+      if(data.nextDate)document.getElementById('visit-next-date').value=data.nextDate;
+      if(data.weight)document.getElementById('visit-weight').value=data.weight;
+      st.style.background='var(--primary-bg)';st.textContent='✅ AI识别完成，请核对信息后保存';
+      App.showToast('识别完成');
+      this._healthUpdate=data.healthUpdate||'';
+    }catch(e){st.style.background='#FFF0F0';st.textContent='⚠️ 扫描失败: '+e.message;App.showToast('扫描失败: '+e.message)}
+    finally{App.hideLoading()}
+  },
+  save(){
+    const p=Store.getCurrentPet();if(!p)return;
+    const date=document.getElementById('visit-date').value;if(!date){App.showToast('请选择就诊日期');return}
+    const hospital=document.getElementById('visit-hospital').value.trim();
+    const diagnosis=document.getElementById('visit-diagnosis').value.trim();
+    const medications=document.getElementById('visit-medications').value.trim();
+    const advice=document.getElementById('visit-advice').value.trim();
+    const nextDate=document.getElementById('visit-next-date').value||null;
+    const weight=document.getElementById('visit-weight').value?parseFloat(document.getElementById('visit-weight').value):null;
+    const r={id:Store.genId('visit'),petId:p.id,type:'visit',date,name:diagnosis?`${hospital}就诊(${diagnosis})`:'就诊记录',nextDate,weight,hospital,diagnosis,medications,advice,photo:this.photoData,note:''};
+    Store.saveHealthRecord(r);
+    if(this._healthUpdate){let mh=p.medicalHistory||'';if(mh&&!mh.endsWith('; '))mh+='; ';mh+=this._healthUpdate;p.medicalHistory=mh;Store.savePet(p);Profile.renderPetList()}
+    if(weight){p.weight=weight;Store.savePet(p);Profile.renderPetList()}
+    HealthRecord.renderRecords();App.renderReminders();App.closeModal('modal-visit');App.showToast('就诊记录已保存');
+    if(this._healthUpdate)App.showToast('病史已自动更新');
+  }
+};
+window.VisitRecord=VisitRecord;
 const App={
-  init(){this.bindEvents();Profile.renderPetList();this.renderReminders();this.updateChatPetInfo();HealthRecord.init();Consultation.init();FeedCalendar.init();GrowthAlbum.init();
+  init(){this.bindEvents();Profile.renderPetList();this.renderReminders();this.updateChatPetInfo();HealthRecord.init();VisitRecord.init();Consultation.init();FeedCalendar.init();GrowthAlbum.init();
     if(Store.getCurrentPet()){HealthRecord.renderAll();FeedCalendar.render();GrowthAlbum.render()}},
   bindEvents(){
     document.querySelectorAll('.nav-item').forEach(i=>{i.addEventListener('click',()=>this.switchPage(i.dataset.page))});
@@ -732,6 +825,7 @@ const App={
     document.getElementById('btn-save-pet').addEventListener('click',()=>Profile.save());
     document.getElementById('btn-add-record').addEventListener('click',()=>HealthRecord.openAddModal());
     document.getElementById('btn-save-record').addEventListener('click',()=>HealthRecord.save());
+    document.getElementById('btn-visit').addEventListener('click',()=>VisitRecord.openModal());
     document.getElementById('qa-products').addEventListener('click',()=>{this.openModal('modal-products');Products.renderLatest()});
     document.getElementById('btn-generate-products').addEventListener('click',()=>Products.generate());
     document.getElementById('qa-hospital').addEventListener('click',()=>this.openModal('modal-hospital'));
