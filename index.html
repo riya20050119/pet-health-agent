@@ -758,9 +758,10 @@ const VisitRecord={
     this._bound=true;
   },
   openModal(){
+    const VR=window.VisitRecord||this;
     const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}
-    if(!this._bound)this.init();
-    this.photoData=null;
+    if(!VR._bound)VR.init();
+    VR.photoData=null;
     document.getElementById('visit-photo-preview').style.display='none';
     document.getElementById('visit-photo-btn').style.display='flex';
     document.getElementById('visit-date').value=Store.formatDate(new Date());
@@ -771,7 +772,7 @@ const VisitRecord={
     document.getElementById('visit-next-date').value='';
     document.getElementById('visit-weight').value='';
     document.getElementById('visit-scan-status').style.display='none';
-    App.openModal('modal-visit');
+    document.getElementById('modal-visit').classList.add('active');
   },
   async handlePhoto(e){
     const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}
@@ -815,7 +816,7 @@ const VisitRecord={
     Store.saveHealthRecord(r);
     if(this._healthUpdate){let mh=p.medicalHistory||'';if(mh&&!mh.endsWith('; '))mh+='; ';mh+=this._healthUpdate;p.medicalHistory=mh;Store.savePet(p);Profile.renderPetList()}
     if(weight){p.weight=weight;Store.savePet(p);Profile.renderPetList()}
-    HealthRecord.renderRecords();App.renderReminders();App.closeModal('modal-visit');App.showToast('就诊记录已保存');
+    HealthRecord.renderRecords();App.renderReminders();document.getElementById('modal-visit').classList.remove('active');App.showToast('就诊记录已保存');
     if(this._healthUpdate)App.showToast('病史已自动更新');
   }
 };
