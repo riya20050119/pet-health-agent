@@ -404,7 +404,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <div class="modal" style="max-width:420px">
       <div class="modal-header"><h3>📋 拍病历录入</h3><button class="modal-close" data-close="modal-visit">✕</button></div>
       <div class="modal-body" style="max-height:70vh;overflow-y:auto">
-        <div class="form-group"><label>拍照/上传病历</label><input type="file" id="visit-photo-input" accept="image/*" style="display:none"><div class="photo-upload-btn" id="visit-photo-btn" style="height:120px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer">📷</div><img class="photo-preview" id="visit-photo-preview" style="display:none;border-radius:12px"></div>
+        <div class="form-group"><label>拍照/上传病历</label><input type="file" id="visit-photo-input" accept="image/*" capture="environment" style="display:none"><div class="photo-upload-btn" id="visit-photo-btn" style="height:120px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;width:100%"><div style="text-align:center"><div>📷</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">点击拍照或上传</div></div></div><img class="photo-preview" id="visit-photo-preview" style="display:none;border-radius:12px;width:100%"></div>
         <div class="form-group"><button class="btn-primary" id="btn-scan-visit" style="width:100%;padding:12px">🤖 AI扫描病历</button></div>
         <div id="visit-scan-status" style="display:none;padding:10px;border-radius:8px;background:var(--primary-bg);font-size:13px;text-align:center;margin-bottom:12px"></div>
         <div class="form-group"><label>就诊日期</label><input type="date" class="form-input" id="visit-date"></div>
@@ -747,14 +747,19 @@ const HealthRecord={
 // ====== VISIT RECORD (拍病历) ======
 const VisitRecord={
   photoData:null,
+  _bound:false,
   init(){
+    if(this._bound)return;
+    const btn=document.getElementById('visit-photo-btn');if(!btn)return;
     document.getElementById('visit-photo-btn').addEventListener('click',()=>document.getElementById('visit-photo-input').click());
     document.getElementById('visit-photo-input').addEventListener('change',e=>this.handlePhoto(e));
     document.getElementById('btn-scan-visit').addEventListener('click',()=>this.scan());
     document.getElementById('btn-save-visit').addEventListener('click',()=>this.save());
+    this._bound=true;
   },
   openModal(){
     const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}
+    if(!this._bound)this.init();
     this.photoData=null;
     document.getElementById('visit-photo-preview').style.display='none';
     document.getElementById('visit-photo-btn').style.display='flex';
