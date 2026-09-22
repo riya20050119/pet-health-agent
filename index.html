@@ -63,7 +63,7 @@ img{max-width:100%;display:block}
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .qa-card{background:var(--card-bg);border-radius:var(--radius);padding:18px 12px;text-align:center;box-shadow:var(--shadow);transition:all .2s}
 .qa-card:active{transform:scale(.96);box-shadow:var(--shadow-hover)}
-.qa-icon{font-size:30px;display:block;margin-bottom:8px}
+.qa-icon{font-size:30px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .qa-label{font-size:13px;color:var(--text-secondary);font-weight:500}
 .qa-card:nth-child(1) .qa-icon{filter:hue-rotate(0deg)}
 .qa-card:nth-child(2){background:linear-gradient(135deg,#FFF0EB,#fff)}
@@ -216,8 +216,22 @@ img{max-width:100%;display:block}
 .bottom-nav{display:flex;background:var(--card-bg);border-top:1px solid var(--border);padding:6px 0;padding-bottom:calc(6px + env(safe-area-inset-bottom,0));flex-shrink:0}
 .nav-item{flex:1;text-align:center;padding:4px;color:var(--text-hint);transition:color .2s;position:relative}
 .nav-item.active{color:var(--primary);font-weight:600}
-.nav-icon{font-size:21px;display:block;text-align:center}
+.nav-icon{display:flex;align-items:center;justify-content:center;height:28px;margin-bottom:2px}
 .nav-item.active .nav-icon{transform:scale(1.1)}
+
+/* Pixel Art Icons */
+.px{display:inline-block;background-image:url(img/pixel-icons-sheet.jpg);image-rendering:pixelated;background-repeat:no-repeat}
+.px-nav{width:24px;height:24px;background-size:72px 72px}
+.px-qa{width:36px;height:36px;background-size:108px 108px}
+.px-cat{background-position:0% 0%}
+.px-dog{background-position:50% 0%}
+.px-stetho{background-position:100% 0%}
+.px-bowl{background-position:0% 50%}
+.px-calendar{background-position:50% 50%}
+.px-camera{background-position:100% 50%}
+.px-clipboard{background-position:0% 100%}
+.px-hospital{background-position:50% 100%}
+.px-bag{background-position:100% 100%}
 .nav-label{font-size:10px;margin-top:2px;font-weight:500}
 
 /* Modal */
@@ -299,10 +313,10 @@ textarea.form-input{resize:vertical;min-height:60px}
         <div class="pet-list" id="pet-list"></div>
         <div class="section-header" style="margin-top:18px"><h2>快捷功能</h2></div>
         <div class="quick-actions">
-          <button class="qa-card" data-page="consultation"><span class="qa-icon">🩺</span><span class="qa-label">AI问诊</span></button>
-          <button class="qa-card" data-page="calendar"><span class="qa-icon">🍽️</span><span class="qa-label">饮食方案</span></button>
-          <button class="qa-card" id="qa-products"><span class="qa-icon">🛒</span><span class="qa-label">产品推荐</span></button>
-          <button class="qa-card" id="qa-hospital"><span class="qa-icon">🏥</span><span class="qa-label">附近医院</span></button>
+          <button class="qa-card" data-page="consultation"><span class="qa-icon"><span class="px px-qa px-stetho"></span></span><span class="qa-label">AI问诊</span></button>
+          <button class="qa-card" data-page="calendar"><span class="qa-icon"><span class="px px-qa px-bowl"></span></span><span class="qa-label">饮食方案</span></button>
+          <button class="qa-card" id="qa-products"><span class="qa-icon"><span class="px px-qa px-bag"></span></span><span class="qa-label">产品推荐</span></button>
+          <button class="qa-card" id="qa-hospital"><span class="qa-icon"><span class="px px-qa px-hospital"></span></span><span class="qa-label">附近医院</span></button>
         </div>
         <div class="section-header" style="margin-top:18px"><h2>健康提醒</h2></div>
         <div class="reminder-list" id="reminder-list"><div class="empty-state">暂无提醒</div></div>
@@ -356,11 +370,11 @@ textarea.form-input{resize:vertical;min-height:60px}
     </section>
   </main>
   <nav class="bottom-nav">
-    <button class="nav-item active" data-page="dashboard"><span class="nav-icon">🏠</span><span class="nav-label">首页</span></button>
-    <button class="nav-item" data-page="consultation"><span class="nav-icon">💬</span><span class="nav-label">问诊</span></button>
-    <button class="nav-item" data-page="calendar"><span class="nav-icon">📅</span><span class="nav-label">日历</span></button>
-    <button class="nav-item" data-page="album"><span class="nav-icon">📸</span><span class="nav-label">相册</span></button>
-    <button class="nav-item" data-page="health"><span class="nav-icon">📋</span><span class="nav-label">档案</span></button>
+    <button class="nav-item active" data-page="dashboard"><span class="nav-icon"><span class="px px-nav px-cat"></span></span><span class="nav-label">首页</span></button>
+    <button class="nav-item" data-page="consultation"><span class="nav-icon"><span class="px px-nav px-stetho"></span></span><span class="nav-label">问诊</span></button>
+    <button class="nav-item" data-page="calendar"><span class="nav-icon"><span class="px px-nav px-calendar"></span></span><span class="nav-label">日历</span></button>
+    <button class="nav-item" data-page="album"><span class="nav-icon"><span class="px px-nav px-camera"></span></span><span class="nav-label">相册</span></button>
+    <button class="nav-item" data-page="health"><span class="nav-icon"><span class="px px-nav px-clipboard"></span></span><span class="nav-label">档案</span></button>
   </nav>
 
   <!-- Modal: Pet Edit -->
