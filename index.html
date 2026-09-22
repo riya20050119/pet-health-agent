@@ -9,25 +9,24 @@
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus{outline:none}
 html{-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:linear-gradient(180deg,#E0FBFA 0%,#FFF8E0 35%,#FFE8E0 70%,#E5F2FC 100%);background-attachment:fixed;color:#2D3436;line-height:1.5;overflow-x:hidden;min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#F8F9FA;color:#1A1A2E;line-height:1.5;overflow-x:hidden;min-height:100vh}
 button{border:none;background:none;cursor:pointer;font-family:inherit}
 input,textarea,select{font-family:inherit}
 img{max-width:100%;display:block}
 :root{
-  --primary:#2DD4CF;--primary-light:#5DE3DE;--primary-dark:#0FB5B0;--primary-bg:#E0FBFA;
-  --accent:#FF7A59;--accent-light:#FF9E7A;--accent-bg:#FFE8E0;
-  --yellow:#FFD93D;--yellow-bg:#FFF8E0;
+  --primary:#2D3436;--primary-light:#636E72;--primary-dark:#1A1A2E;--primary-bg:#F0F3F5;
+  --accent:#FF6B6B;--accent-light:#FF8E8E;--accent-bg:#FFF0F0;
+  --yellow:#FFD93D;--yellow-bg:#FFFBE0;
   --blue:#4D9DE0;--blue-bg:#E5F2FC;
   --lilac:#B8A4D4;--lilac-bg:#F3EDF9;
-  --warm:#FFD56B;--warm-bg:#FFF8E8;
   --danger:#FF5757;--danger-bg:#FFE8E8;
   --success:#4CAF50;--success-bg:#E8F8EC;
-  --bg:transparent;--card-bg:#fff;--text:#2D3436;--text-secondary:#6C7A89;--text-hint:#AAB5AA;
-  --border:#E8ECF0;--shadow:0 2px 12px rgba(45,212,207,.08);--shadow-hover:0 4px 20px rgba(45,212,207,.15);
-  --radius:16px;--radius-sm:12px;--radius-lg:24px;--radius-pill:99px
+  --bg:#F8F9FA;--card-bg:#fff;--text:#1A1A2E;--text-secondary:#6C7A89;--text-hint:#B2BEC3;
+  --border:#ECEEF0;--shadow:0 1px 4px rgba(0,0,0,.06);--shadow-hover:0 2px 8px rgba(0,0,0,.1);
+  --radius:14px;--radius-sm:10px;--radius-lg:20px;--radius-pill:99px
 }
 #app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative;box-shadow:0 0 60px rgba(0,0,0,.04)}
-.app-header{background:linear-gradient(135deg,#2DD4CF 0%,#4D9DE0 100%);padding:14px 18px;flex-shrink:0;position:sticky;top:0;z-index:100;border-radius:0 0 24px 24px;box-shadow:0 2px 20px rgba(45,212,207,.25)}
+.app-header{background:#1A1A2E;padding:14px 18px;flex-shrink:0;position:sticky;top:0;z-index:100;border-radius:0 0 20px 20px}
 .header-content{display:flex;align-items:center;justify-content:space-between}
 .app-title{color:#fff;font-size:19px;font-weight:700;letter-spacing:.5px}
 .icon-btn{color:#fff;font-size:22px;padding:6px 10px;opacity:.9;border-radius:var(--radius-pill);transition:background .2s}
@@ -61,14 +60,14 @@ img{max-width:100%;display:block}
 
 /* Quick actions */
 .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.qa-card{background:var(--card-bg);border-radius:var(--radius);padding:18px 12px;text-align:center;box-shadow:var(--shadow);transition:all .2s}
-.qa-card:active{transform:scale(.96);box-shadow:var(--shadow-hover)}
+.qa-card{background:var(--card-bg);border-radius:var(--radius);padding:18px 12px;text-align:center;border:1px solid var(--border);transition:all .2s}
+.qa-card:active{transform:scale(.96)}
 .qa-icon{font-size:30px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .qa-label{font-size:13px;color:var(--text-secondary);font-weight:500}
-.qa-card:nth-child(1) .qa-icon{filter:hue-rotate(0deg)}
-.qa-card:nth-child(2){background:linear-gradient(135deg,#FFF0EB,#fff)}
-.qa-card:nth-child(3){background:linear-gradient(135deg,#F3EDF9,#fff)}
-.qa-card:nth-child(4){background:linear-gradient(135deg,#E8F7F3,#fff)}
+.qa-card:nth-child(1) .qa-icon{}
+.qa-card:nth-child(2){}
+.qa-card:nth-child(3){}
+.qa-card:nth-child(4){}
 
 /* Reminders */
 .reminder-list{display:flex;flex-direction:column;gap:8px}
@@ -259,7 +258,7 @@ textarea.form-input{resize:vertical;min-height:60px}
 .option-item{text-align:center;padding:10px 4px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:12px;color:var(--text-secondary);transition:all .15s}
 .option-item .emoji{font-size:20px;display:block;margin-bottom:2px}
 .option-item.selected{border-color:var(--primary);background:var(--primary-bg);color:var(--primary)}
-.btn-primary{flex:1;background:linear-gradient(135deg,var(--accent),#FF5757);color:#fff;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600;transition:transform .15s;box-shadow:0 2px 8px rgba(255,122,89,.25)}
+.btn-primary{flex:1;background:#1A1A2E;color:#fff;border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600;transition:transform .15s}
 .btn-primary:active{transform:scale(.97)}
 .btn-secondary{flex:1;background:#f0f0f0;color:var(--text-secondary);border-radius:var(--radius-sm);padding:12px;font-size:15px;font-weight:600}
 .hospital-list,.product-list{display:flex;flex-direction:column;gap:8px}
@@ -301,8 +300,8 @@ textarea.form-input{resize:vertical;min-height:60px}
 <div id="app">
   <header class="app-header">
     <div class="header-content">
-      <h1 class="app-title">🐾 宠医智伴</h1>
-      <button class="icon-btn" id="btn-settings" title="设置">⚙️</button>
+      <h1 class="app-title">宠医智伴</h1>
+      <button class="icon-btn" id="btn-settings" title="设置"><span class="px px-nav px-clipboard" style="filter:invert(1)"></span></button>
     </div>
   </header>
   <main class="app-main">
@@ -327,10 +326,10 @@ textarea.form-input{resize:vertical;min-height:60px}
       <div class="page-inner chat-page">
         <div class="chat-header"><div class="chat-pet-info" id="chat-pet-info">请先选择宠物</div></div>
         <div class="chat-messages" id="chat-messages">
-          <div class="chat-welcome"><span class="chat-welcome-icon">🩺</span><p>选择宠物后，描述你观察到的症状，AI会帮你初步分析</p><p class="chat-welcome-hint">比如：猫咪最近喝水多、尿多、体重下降</p></div>
+          <div class="chat-welcome"><span class="chat-welcome-icon"><span class="px px-qa px-stetho"></span></span><p>选择宠物后，描述你观察到的症状，AI会帮你初步分析</p><p class="chat-welcome-hint">比如：猫咪最近喝水多、尿多、体重下降</p></div>
         </div>
         <div class="chat-input-area">
-          <button class="chat-photo-btn" id="chat-photo-btn" title="上传照片">📷</button>
+          <button class="chat-photo-btn" id="chat-photo-btn" title="上传照片"><span class="px px-nav px-camera"></span></button>
           <input type="file" id="chat-photo-input" accept="image/*" style="display:none">
           <div class="chat-input-wrap"><textarea class="chat-input" id="chat-input" placeholder="描述宠物症状..." rows="1"></textarea></div>
           <button class="chat-send-btn" id="chat-send" title="发送">↑</button>
@@ -419,10 +418,10 @@ textarea.form-input{resize:vertical;min-height:60px}
   <!-- Modal: Visit Record (拍病历) -->
   <div class="modal-overlay" id="modal-visit">
     <div class="modal" style="max-width:420px">
-      <div class="modal-header"><h3>📋 拍病历录入</h3><button class="modal-close" data-close="modal-visit">✕</button></div>
+      <div class="modal-header"><h3>拍病历录入</h3><button class="modal-close" data-close="modal-visit">✕</button></div>
       <div class="modal-body" style="max-height:70vh;overflow-y:auto">
-        <div class="form-group"><label>拍照/上传病历</label><input type="file" id="visit-photo-input" accept="image/*" capture="environment" style="display:none"><div class="photo-upload-btn" id="visit-photo-btn" style="height:120px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;cursor:pointer;width:100%"><div style="text-align:center"><div>📷</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">点击拍照或上传</div></div></div><img class="photo-preview" id="visit-photo-preview" style="display:none;border-radius:12px;width:100%"></div>
-        <div class="form-group"><button class="btn-primary" id="btn-scan-visit" onclick="window.VisitRecord&&window.VisitRecord.scan()" style="width:100%;padding:12px">🤖 AI扫描病历</button></div>
+        <div class="form-group"><label>拍照/上传病历</label><input type="file" id="visit-photo-input" accept="image/*" capture="environment" style="display:none"><div class="photo-upload-btn" id="visit-photo-btn" style="height:120px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;width:100%"><div style="text-align:center"><div><span class="px px-qa px-camera"></span></div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px">点击拍照或上传</div></div></div><img class="photo-preview" id="visit-photo-preview" style="display:none;border-radius:12px;width:100%"></div>
+        <div class="form-group"><button class="btn-primary" id="btn-scan-visit" onclick="window.VisitRecord&&window.VisitRecord.scan()" style="width:100%;padding:12px">AI扫描病历</button></div>
         <div id="visit-scan-status" style="display:none;padding:10px;border-radius:8px;background:var(--primary-bg);font-size:13px;text-align:center;margin-bottom:12px"></div>
         <div class="form-group"><label>就诊日期</label><input type="date" class="form-input" id="visit-date"></div>
         <div class="form-group"><label>就诊医院</label><input type="text" class="form-input" id="visit-hospital" placeholder="如：瑞鹏宠物医院"></div>
@@ -477,7 +476,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <div class="modal">
       <div class="modal-header"><h3>附近宠物医院</h3><button class="modal-close" data-close="modal-hospital">✕</button></div>
       <div class="modal-body"><div class="hospital-search-status" id="hospital-status"><p>点击下方按钮，搜索你附近的宠物医院</p></div><div class="hospital-list" id="hospital-list"></div></div>
-      <div class="modal-footer"><button class="btn-primary" id="btn-search-hospital">🔍 搜索附近医院</button></div>
+      <div class="modal-footer"><button class="btn-primary" id="btn-search-hospital">搜索附近医院</button></div>
     </div>
   </div>
 
@@ -486,7 +485,7 @@ textarea.form-input{resize:vertical;min-height:60px}
     <div class="modal">
       <div class="modal-header"><h3>产品推荐</h3><button class="modal-close" data-close="modal-products">✕</button></div>
       <div class="modal-body"><div id="products-status" class="loading-state"><p>点击下方按钮，AI将根据宠物健康状态推荐合适产品</p></div><div class="product-list" id="product-list"></div></div>
-      <div class="modal-footer"><button class="btn-primary" id="btn-generate-products">🛒 生成推荐</button></div>
+      <div class="modal-footer"><button class="btn-primary" id="btn-generate-products">生成推荐</button></div>
     </div>
   </div>
 
@@ -563,7 +562,7 @@ const API={
 
 // ====== PROMPTS ======
 const Prompts={
-  consultation(p){return`你是"宠医智伴"，一位专业、温和的宠物健康顾问AI。你正在为以下宠物进行问诊：\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n问诊规则：\n1.模拟真实兽医问诊流程：主诉→追问现病史→鉴别诊断→建议\n2.每次只问1-2个问题\n3.语气亲切温和，称呼宠物名字\n4.如果用户上传了照片，分析可能的外观异常\n5.信息不足时继续追问，不要急于下结论\n6.症状较轻给居家护理建议，需要就医时明确告知\n\n收集到足够信息后，输出最终诊断分析，格式如下：\n\n【可能原因】\n1.xxx\n2.xxx\n3.xxx\n\n【严重程度】\n（🟢可观察|🟡建议就医|🔴紧急就医）\n\n【居家处理建议】\n-xxx\n\n【就医前准备】\n-xxx\n\n【健康调整因子】\n列出英文标识符，如：diabetes_risk,kidney_risk,obesity,food_allergy,urinary_issue,digestive_issue,skin_issue\n如无则写：none\n\n请用中文回复。`},
+  consultation(p){return`你是"宠医智伴"，一位专业、温和的宠物健康顾问AI。你正在为以下宠物进行问诊：\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n问诊规则：\n1.模拟真实兽医问诊流程：主诉→追问现病史→鉴别诊断→建议\n2.每次只问1-2个问题\n3.语气亲切温和，称呼宠物名字\n4.如果用户上传了照片，分析可能的外观异常\n5.信息不足时继续追问，不要急于下结论\n6.症状较轻给居家护理建议，需要就医时明确告知\n7.不要在回复中使用任何emoji表情符号\n\n收集到足够信息后，输出最终诊断分析，格式如下：\n\n【可能原因】\n1.xxx\n2.xxx\n3.xxx\n\n【严重程度】\n（可观察|建议就医|紧急就医）\n\n【居家处理建议】\n-xxx\n\n【就医前准备】\n-xxx\n\n【健康调整因子】\n列出英文标识符，如：diabetes_risk,kidney_risk,obesity,food_allergy,urinary_issue,digestive_issue,skin_issue\n如无则写：none\n\n请用中文回复，不要使用任何emoji。`},
   image(p,desc){return`你是宠物健康顾问。请分析这张宠物照片。\n\n宠物信息：${p.name}，${p.type==='cat'?'猫':p.type==='dog'?'狗':p.type}，${p.breed||'品种未知'}，${Store.calcAge(p.birthDate)}，体重${p.weight||'未知'}kg\n\n用户描述：${desc||'无'}\n\n请观察是否有以下异常：皮肤红肿/脱毛/皮屑、眼睛分泌物/红肿、耳朵分泌物、口腔牙龈、毛发粗糙、体态消瘦或肥胖等。\n用简洁中文描述你观察到的，并给出初步判断。`},
   diet(p,c){const age=Store.calcAge(p.birthDate);const w=p.weight||4;const rer=Math.round(70*Math.pow(w,0.75));const factor=p.activity==='high'?1.6:p.activity==='low'?1.2:1.4;const dailyTarget=Math.round(rer*factor);const sp=p.type==='cat'?'猫':p.type==='dog'?'狗':p.type;return`你是"宠医智伴"的饮食方案引擎。请为以下宠物生成个性化每日饮食方案。\n\n宠物信息（已计算好，直接使用）：\n- 名称：${p.name}\n- 类型：${sp}\n- 品种：${p.breed||'未知'}\n- 年龄：${age}\n- 体重：${w}kg\n- 绝育：${p.neutered?'已绝育':'未绝育'}\n- 活动量：${p.activity||'medium'}\n- 既往病史：${p.medicalHistory||'无'}\n- 过敏史：${p.allergies||'无'}\n- 当前主粮：${p.currentDiet||'未知'}\n\n已计算好的热量数据（直接使用，不要重新计算）：\n- RER(静息能量需求) = 70 × ${w}^0.75 = ${rer} kcal/天\n- DER(每日能量需求) = RER × ${factor}(活动系数) = ${dailyTarget} kcal/天\n\n最近问诊结果：\n${c?JSON.stringify(c.diagnosis||c,null,2):'无最近问诊记录'}\n\n健康调整因子：${c?.diagnosis?.healthFactors?.join(', ')||'none'}\n\n请根据品种营养需求、年龄阶段、体重热量、健康调整因子生成方案。\n\n输出格式(JSON)：\n{"dailyCalorieTarget":${dailyTarget},"healthAdjustments":[{"factor":"diabetes_risk","adjustment":"碳水减少40%","reason":"糖尿病风险"}],"meals":[{"time":"08:00","food":"具体食物和份量(克数)","calories":数字(这顿的卡路里，两顿加起来应接近dailyCalorieTarget)","protein":数字(克),"adjustment":"调整说明或空"},{"time":"18:00","food":"具体食物和份量(克数)","calories":数字(这顿的卡路里，两顿加起来应接近dailyCalorieTarget)","protein":数字(克),"adjustment":"调整说明或空"}],"forbiddenFoods":["食物1","食物2"],"nutritionRatio":{"protein":数字,"fat":数字,"carbs":数字},"summary":"一句话总结"}\n\n规则：\n1.dailyCalorieTarget必须等于${dailyTarget}\n2.每顿的calories不能相同，要根据食物种类和份量计算\n3.两顿calories之和应接近dailyCalorieTarget\n4.蛋白质克数要根据食物实际蛋白质含量计算\n5.食物推荐要具体到品牌和克数\n6.有健康调整因子时每个meal的adjustment必须填写\n7.禁忌食物包含该物种常见禁忌\n只输出JSON。`},
   products(p,d,c){return`你是"宠医智伴"的产品推荐引擎。请根据宠物健康状况推荐产品。\n\n宠物档案：\n${JSON.stringify(p,null,2)}\n\n饮食方案：\n${d?JSON.stringify(d,null,2):'无'}\n\n健康状态：\n${c?.diagnosis?JSON.stringify(c.diagnosis,null,2):'无问诊记录'}\n\n推荐规则：1.基于饮食方案推荐粮食/零食/保健品 2.有健康问题自动过滤不适产品 3.每推荐含名称/理由/价格/适用说明 4.推荐3-5个\n\n输出格式(JSON数组)：\n[{"name":"名称","category":"主粮/零食/保健品","reason":"推荐理由","priceRange":"50-100元","suitableFor":"适用说明"}]\n\n只输出JSON。`},
@@ -572,19 +571,19 @@ const Prompts={
 
 // ====== PROFILE ======
 const Profile={
-  petTypes:[{key:'cat',label:'猫',emoji:'🐱'},{key:'dog',label:'狗',emoji:'🐶'},{key:'rabbit',label:'兔子',emoji:'🐰'},{key:'hamster',label:'仓鼠',emoji:'🐹'},{key:'chinchilla',label:'龙猫',emoji:'🦫'},{key:'turtle',label:'龟',emoji:'🐢'},{key:'lizard',label:'蜥蜴',emoji:'🦎'},{key:'other',label:'其他',emoji:'🐾'}],
+  petTypes:[{key:'cat',label:'猫',pxClass:'px-cat'},{key:'dog',label:'狗',pxClass:'px-dog'},{key:'rabbit',label:'兔子',pxClass:'px-dog'},{key:'hamster',label:'仓鼠',pxClass:'px-dog'},{key:'chinchilla',label:'龙猫',pxClass:'px-dog'},{key:'turtle',label:'龟',pxClass:'px-dog'},{key:'lizard',label:'蜥蜴',pxClass:'px-dog'},{key:'other',label:'其他',pxClass:'px-dog'}],
   editingPetId:null,selectedType:'cat',
-  getEmoji(t){const p=this.petTypes.find(x=>x.key===t);return p?p.emoji:'🐾'},
+  getEmoji(t){const p=this.petTypes.find(x=>x.key===t);return p?`<span class="px px-nav ${p.pxClass||'px-dog'}"></span>`:'<span class="px px-nav px-dog"></span>'},
   getTypeLabel(t){const p=this.petTypes.find(x=>x.key===t);return p?p.label:t},
-  getHealthStatus(pid){const l=Store.getLatestConsultation(pid);if(!l||!l.diagnosis)return{cls:'healthy',label:'健康'};const s=l.diagnosis.severity||'';if(s.includes('紧急')||s.includes('🔴'))return{cls:'danger',label:'需就医'};if(s.includes('建议')||s.includes('🟡'))return{cls:'warning',label:'需关注'};return{cls:'healthy',label:'健康'}},
-  renderPetList(){const pets=Store.getPets();const el=document.getElementById('pet-list');if(pets.length===0){el.innerHTML='<div class="empty-state"><span class="empty-icon">🐾</span><p>还没有添加宠物</p><p>点击右上角「添加」创建</p></div>';return}
-    el.innerHTML=pets.map(p=>{const cid=Store.getCurrentPetId();const sel=p.id===cid;const age=Store.calcAge(p.birthDate);const hs=this.getHealthStatus(p.id);return`<div class="pet-card${sel?' selected':''}" data-pet-id="${p.id}"><div class="pet-avatar">${this.getEmoji(p.type)}</div><div class="pet-info"><div class="name">${p.name}</div><div class="meta">${this.getTypeLabel(p.type)} · ${p.breed||'品种未知'} · ${age} · ${p.weight||'?'}kg</div></div><div class="pet-status ${hs.cls}">${hs.label}</div><div class="pet-card-actions"><button class="pet-edit-btn" data-pet-id="${p.id}">✏️</button><button class="pet-delete-btn" data-pet-id="${p.id}">🗑️</button></div></div>`}).join('');
+  getHealthStatus(pid){const l=Store.getLatestConsultation(pid);if(!l||!l.diagnosis)return{cls:'healthy',label:'健康'};const s=l.diagnosis.severity||'';if(s.includes('紧急'))return{cls:'danger',label:'需就医'};if(s.includes('建议就医'))return{cls:'warning',label:'需关注'};return{cls:'healthy',label:'健康'}},
+  renderPetList(){const pets=Store.getPets();const el=document.getElementById('pet-list');if(pets.length===0){el.innerHTML='<div class="empty-state"><span class="empty-icon"><span class="px px-qa px-cat"></span></span><p>还没有添加宠物</p><p>点击右上角「添加」创建</p></div>';return}
+    el.innerHTML=pets.map(p=>{const cid=Store.getCurrentPetId();const sel=p.id===cid;const age=Store.calcAge(p.birthDate);const hs=this.getHealthStatus(p.id);return`<div class="pet-card${sel?' selected':''}" data-pet-id="${p.id}"><div class="pet-avatar">${this.getEmoji(p.type)}</div><div class="pet-info"><div class="name">${p.name}</div><div class="meta">${this.getTypeLabel(p.type)} · ${p.breed||'品种未知'} · ${age} · ${p.weight||'?'}kg</div></div><div class="pet-status ${hs.cls}">${hs.label}</div><div class="pet-card-actions"><button class="pet-edit-btn" data-pet-id="${p.id}">编辑</button><button class="pet-delete-btn" data-pet-id="${p.id}">删除</button></div></div>`}).join('');
     el.querySelectorAll('.pet-card').forEach(c=>{c.addEventListener('click',e=>{if(e.target.closest('.pet-card-actions'))return;Store.setCurrentPetId(c.dataset.petId);this.renderPetList();App.updateChatPetInfo();App.showToast('已切换宠物')})});
     el.querySelectorAll('.pet-edit-btn').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();this.openEditModal(b.dataset.petId)})});
     el.querySelectorAll('.pet-delete-btn').forEach(b=>{b.addEventListener('click',e=>{e.stopPropagation();if(confirm('确定删除这只宠物吗？')){Store.deletePet(b.dataset.petId);this.renderPetList();App.updateChatPetInfo();App.renderReminders();App.showToast('已删除')}})})},
   openAddModal(){this.editingPetId=null;this.selectedType='cat';document.getElementById('pet-edit-title').textContent='添加宠物';['pet-name','pet-breed','pet-medical-history','pet-allergies','pet-current-diet'].forEach(id=>document.getElementById(id).value='');document.getElementById('pet-birthdate').value='';document.getElementById('pet-gender').value='male';document.getElementById('pet-weight').value='';document.getElementById('pet-activity').value='medium';document.getElementById('pet-neutered').value='false';this.renderTypeGrid();App.openModal('modal-pet-edit')},
   openEditModal(id){const p=Store.getPet(id);if(!p)return;this.editingPetId=id;this.selectedType=p.type;document.getElementById('pet-edit-title').textContent='编辑宠物';document.getElementById('pet-name').value=p.name||'';document.getElementById('pet-breed').value=p.breed||'';document.getElementById('pet-birthdate').value=p.birthDate||'';document.getElementById('pet-gender').value=p.gender||'male';document.getElementById('pet-weight').value=p.weight||'';document.getElementById('pet-activity').value=p.activity||'medium';document.getElementById('pet-neutered').value=String(p.neutered);document.getElementById('pet-medical-history').value=p.medicalHistory||'';document.getElementById('pet-allergies').value=p.allergies||'';document.getElementById('pet-current-diet').value=p.currentDiet||'';this.renderTypeGrid();App.openModal('modal-pet-edit')},
-  renderTypeGrid(){const g=document.getElementById('pet-type-grid');g.innerHTML=this.petTypes.map(t=>`<div class="option-item${t.key===this.selectedType?' selected':''}" data-type="${t.key}"><span class="emoji">${t.emoji}</span>${t.label}</div>`).join('');g.querySelectorAll('.option-item').forEach(i=>{i.addEventListener('click',()=>{this.selectedType=i.dataset.type;this.renderTypeGrid()})})},
+  renderTypeGrid(){const g=document.getElementById('pet-type-grid');g.innerHTML=this.petTypes.map(t=>`<div class="option-item${t.key===this.selectedType?' selected':''}" data-type="${t.key}"><span class="px px-nav ${t.pxClass||'px-dog'}"></span>${t.label}</div>`).join('');g.querySelectorAll('.option-item').forEach(i=>{i.addEventListener('click',()=>{this.selectedType=i.dataset.type;this.renderTypeGrid()})})},
   save(){const name=document.getElementById('pet-name').value.trim();if(!name){App.showToast('请输入宠物名称');return}
     const pet={id:this.editingPetId||Store.genId('pet'),name,type:this.selectedType,breed:document.getElementById('pet-breed').value.trim(),birthDate:document.getElementById('pet-birthdate').value,gender:document.getElementById('pet-gender').value,weight:parseFloat(document.getElementById('pet-weight').value)||null,activity:document.getElementById('pet-activity').value,neutered:document.getElementById('pet-neutered').value==='true',medicalHistory:document.getElementById('pet-medical-history').value.trim(),allergies:document.getElementById('pet-allergies').value.trim(),currentDiet:document.getElementById('pet-current-diet').value.trim(),createdAt:this.editingPetId?Store.getPet(this.editingPetId).createdAt:new Date().toISOString()};
     Store.savePet(pet);if(!this.editingPetId)Store.setCurrentPetId(pet.id);this.renderPetList();App.updateChatPetInfo();App.renderReminders();App.closeModal('modal-pet-edit');App.showToast(this.editingPetId?'已更新':'已添加')}
@@ -605,14 +604,14 @@ const Consultation={messages:[],currentId:null,isWaiting:false,pendingImage:null
     this.isWaiting=true;document.getElementById('chat-send').disabled=true;
     let content=text;let imgResult=null;
     if(this.pendingImage){const pet=Store.getCurrentPet();App.showLoading('正在分析照片...');try{imgResult=await API.analyzeImage(this.pendingImage,Prompts.image(pet,text));content=`${text}\n[照片分析结果: ${imgResult}]`}catch(e){App.showToast('照片分析失败: '+e.message)}App.hideLoading()}
-    this.messages.push({role:'user',content,image:this.pendingImage});inp.value='';inp.style.height='auto';this.pendingImage=null;document.getElementById('chat-photo-btn').textContent='📷';this.renderMessages();this.showTyping();
+    this.messages.push({role:'user',content,image:this.pendingImage});inp.value='';inp.style.height='auto';this.pendingImage=null;document.getElementById('chat-photo-btn').style.opacity='1';this.renderMessages();this.showTyping();
     const apiMsgs=this.messages.map(m=>({role:m.role,content:m.content}));const pet=Store.getCurrentPet();
     try{const reply=await API.chatWithSystem(Prompts.consultation(pet),apiMsgs);this.hideTyping();this.messages.push({role:'assistant',content:reply});const diag=this.parseDiagnosis(reply);if(diag)this.save(pet.id,reply,diag);this.renderMessages()}catch(e){this.hideTyping();App.showToast('AI请求失败: '+e.message)}finally{this.isWaiting=false;document.getElementById('chat-send').disabled=false}},
-  async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.pendingImage=await API.fileToBase64(f);App.hideLoading();document.getElementById('chat-photo-btn').textContent='✅';App.showToast('图片已添加，发送即可分析');e.target.value=''},
-  parseDiagnosis(t){if(!t.includes('可能原因')&&!t.includes('严重程度'))return null;const sm=t.match(/严重程度[\s\S]*?(🟢|🟡|🔴|可观察|建议就医|紧急就医)/);const sev=sm?sm[1]:'';const cs=t.match(/可能原因[\s\S]*?(?=严重程度|健康调整因子|$)/);const causes=cs?cs[0].split('\n').filter(l=>/^\d/.test(l.trim())).map(l=>l.replace(/^\d+\.\s*/,'').trim()):[];const fm=t.match(/健康调整因子[\s\S]*$/);let hf=[];if(fm&&!fm[0].includes('none')){const known=['diabetes_risk','kidney_risk','obesity','food_allergy','urinary_issue','digestive_issue','skin_issue','dental_issue','eye_issue','ear_issue'];hf=known.filter(f=>fm[0].includes(f))}let sl='observe';if(sev.includes('🔴')||sev.includes('紧急'))sl='urgent';else if(sev.includes('🟡')||sev.includes('建议就医'))sl='soon';return{possibleCauses:causes,severity:sev.trim(),severityLevel:sl,healthFactors:hf,rawText:t}},
+  async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.pendingImage=await API.fileToBase64(f);App.hideLoading();const btn=document.getElementById('chat-photo-btn');btn.style.opacity='0.5';App.showToast('图片已添加，发送即可分析');e.target.value=''},
+  parseDiagnosis(t){if(!t.includes('可能原因')&&!t.includes('严重程度'))return null;const sm=t.match(/严重程度[\s\S]*?(紧急就医|建议就医|可观察)/);const sev=sm?sm[1]:'';const cs=t.match(/可能原因[\s\S]*?(?=严重程度|健康调整因子|$)/);const causes=cs?cs[0].split('\n').filter(l=>/^\d/.test(l.trim())).map(l=>l.replace(/^\d+\.\s*/,'').trim()):[];const fm=t.match(/健康调整因子[\s\S]*$/);let hf=[];if(fm&&!fm[0].includes('none')){const known=['diabetes_risk','kidney_risk','obesity','food_allergy','urinary_issue','digestive_issue','skin_issue','dental_issue','eye_issue','ear_issue'];hf=known.filter(f=>fm[0].includes(f))}let sl='observe';if(sev.includes('紧急'))sl='urgent';else if(sev.includes('建议就医'))sl='soon';return{possibleCauses:causes,severity:sev.trim(),severityLevel:sl,healthFactors:hf,rawText:t}},
   save(pid,text,diag){const c={id:this.currentId,petId:pid,timestamp:new Date().toISOString(),messages:this.messages.map(m=>({role:m.role,content:m.content.includes('[照片分析结果')?m.content.split('[照片分析结果')[0].trim():m.content,hasImage:!!m.image})),diagnosis:diag};Store.saveConsultation(c);Profile.renderPetList();App.renderReminders()},
   renderMessages(){const c=document.getElementById('chat-messages');if(this.messages.length===0)return;const pet=Store.getCurrentPet();c.innerHTML='<div class="msg system">— '+Profile.getEmoji(pet.type)+' '+pet.name+' 的问诊 —</div>'+this.messages.map(m=>{if(m.role==='user'){let h='<div class="msg user">'+this.esc(m.content.replace(/\[照片分析结果[\s\S]*\]/,'[已附照片]'));if(m.image)h+='<img src="'+m.image+'" alt="photo">';h+='</div>';return h}return'<div class="msg ai">'+this.fmt(m.content)+'</div>'}).join('');c.scrollTop=c.scrollHeight},
-  fmt(text){let html=this.esc(text);if(text.includes('可能原因')&&text.includes('严重程度')){const d=this.parseDiagnosis(text);if(d){const sc=d.severityLevel==='urgent'?'urgent':d.severityLevel==='soon'?'soon':'observe';const lb=d.severityLevel==='urgent'?'🔴 紧急就医':d.severityLevel==='soon'?'🟡 建议就医':'🟢 可观察';let btns='';if(d.severityLevel==='urgent'||d.severityLevel==='soon')btns+='<br><button class="hospital-btn" onclick="App.openModal(\'modal-hospital\')">🏥 查找附近宠物医院</button>';btns+='<button class="diet-btn" onclick="Diet.generateFromConsultation(\''+this.currentId+'\')">🍽️ 生成饮食方案</button>';html+='<div class="diagnosis-block"><div class="severity '+sc+'">'+lb+'</div>'+btns+'</div>'}}return html},
+  fmt(text){let html=this.esc(text);if(text.includes('可能原因')&&text.includes('严重程度')){const d=this.parseDiagnosis(text);if(d){const sc=d.severityLevel==='urgent'?'urgent':d.severityLevel==='soon'?'soon':'observe';const lb=d.severityLevel==='urgent'?'紧急就医':d.severityLevel==='soon'?'建议就医':'可观察';let btns='';if(d.severityLevel==='urgent'||d.severityLevel==='soon')btns+='<br><button class="hospital-btn" onclick="App.openModal(\'modal-hospital\')">查找附近宠物医院</button>';btns+='<button class="diet-btn" onclick="Diet.generateFromConsultation(\''+this.currentId+'\')">生成饮食方案</button>';html+='<div class="diagnosis-block"><div class="severity '+sc+'">'+lb+'</div>'+btns+'</div>'}}return html},
   showTyping(){const c=document.getElementById('chat-messages');const d=document.createElement('div');d.className='msg ai';d.id='typing-indicator';d.innerHTML='<div class="typing-indicator"><span></span><span></span><span></span></div>';c.appendChild(d);c.scrollTop=c.scrollHeight},
   hideTyping(){const e=document.getElementById('typing-indicator');if(e)e.remove()},
   esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML.replace(/\n/g,'<br>')},
@@ -627,10 +626,10 @@ const Diet={
     try{const r=await API.chatWithSystem(Prompts.diet(p,c),[{role:'user',content:'请生成饮食方案'}]);console.log('Diet API response:',r);const plan=API.parseJSON(r);if(!plan){console.error('Parse failed, raw:',r);App.showToast('AI返回格式异常，请重试');App.hideLoading();return}
       const dp={id:Store.genId('diet'),petId:pid,consultationId:c?.id||null,date:Store.formatDate(new Date()),...plan};Store.saveDietPlan(dp);this.renderModal(dp);App.openModal('modal-diet');FeedCalendar.render();App.showToast('饮食方案已生成')}catch(e){console.error('Diet gen error:',e);App.showToast('生成失败: '+e.message)}finally{App.hideLoading()}},
   renderModal(plan){const el=document.getElementById('diet-modal-body');if(!plan){el.innerHTML='<p>暂无饮食方案</p>';return}
-    let ah='';if(plan.healthAdjustments&&plan.healthAdjustments.length>0)ah='<div class="diet-warning">'+plan.healthAdjustments.map(a=>`⚠️ ${a.reason||a.factor}：${a.adjustment}`).join('<br>')+'</div>';
-    let mh='';if(plan.meals&&plan.meals.length>0)mh=plan.meals.map(m=>`<div class="meal-card"><div class="meal-time">⏰ ${m.time}</div><div class="meal-content">${m.food}</div>${m.adjustment?`<div class="meal-adjustment">🔧 ${m.adjustment}</div>`:''}</div>`).join('');
-    let fh='';if(plan.forbiddenFoods&&plan.forbiddenFoods.length>0)fh=`<div class="forbidden-list"><h4>🚫 禁忌食物</h4><div class="items">${plan.forbiddenFoods.join('、')}</div></div>`;
-    let nh='';if(plan.nutritionRatio){const r=plan.nutritionRatio;nh=`<div class="meal-card"><div class="meal-time">📊 营养素配比</div><div class="meal-content">蛋白质 ${r.protein}% · 脂肪 ${r.fat}% · 碳水 ${r.carbs}%</div></div>`}
+    let ah='';if(plan.healthAdjustments&&plan.healthAdjustments.length>0)ah='<div class="diet-warning">'+plan.healthAdjustments.map(a=>`${a.reason||a.factor}：${a.adjustment}`).join('<br>')+'</div>';
+    let mh='';if(plan.meals&&plan.meals.length>0)mh=plan.meals.map(m=>`<div class="meal-card"><div class="meal-time">${m.time}</div><div class="meal-content">${m.food}</div>${m.adjustment?`<div class="meal-adjustment">${m.adjustment}</div>`:''}</div>`).join('');
+    let fh='';if(plan.forbiddenFoods&&plan.forbiddenFoods.length>0)fh=`<div class="forbidden-list"><h4>禁忌食物</h4><div class="items">${plan.forbiddenFoods.join('、')}</div></div>`;
+    let nh='';if(plan.nutritionRatio){const r=plan.nutritionRatio;nh=`<div class="meal-card"><div class="meal-time">营养素配比</div><div class="meal-content">蛋白质 ${r.protein}% · 脂肪 ${r.fat}% · 碳水 ${r.carbs}%</div></div>`}
     el.innerHTML=`<div class="diet-summary"><div class="diet-calorie">${plan.dailyCalorieTarget||'—'}<span class="unit"> kcal/天</span></div><div class="diet-calorie-label">${plan.summary||'每日饮食计划'}</div>${ah}</div>${mh}${nh}${fh}`}
 };
 
@@ -696,9 +695,9 @@ const FeedCalendar={
 const GrowthAlbum={
   photoData:null,
   init(){document.getElementById('btn-add-photo').addEventListener('click',()=>this.openAddModal());document.getElementById('btn-save-album').addEventListener('click',()=>this.save());document.getElementById('album-photo-btn').addEventListener('click',()=>document.getElementById('album-photo-input').click());document.getElementById('album-photo-input').addEventListener('change',e=>this.handlePhoto(e))},
-  render(){const p=Store.getCurrentPet();const el=document.getElementById('album-timeline');if(!p){el.innerHTML='<div class="empty-state"><span class="empty-icon">📸</span><p>请先选择宠物</p></div>';return}
-    const records=Store.getAlbumRecords(p.id);if(records.length===0){el.innerHTML='<div class="album-empty"><div class="icon">🐱</div><p>还没有成长记录</p><p style="font-size:13px;margin-top:6px">点击右上角「+ 记录」开始记录</p></div>';return}
-    el.innerHTML=records.map((r,i)=>{const age=Store.calcAgeByDate(p.birthDate,r.date);const isLast=i===records.length-1;return`<div class="album-entry"><div class="album-date-col"><div class="age-tag">${age||''}</div><div class="date-circle">${r.date.slice(5)}</div>${!isLast?'<div class="line"></div>':''}</div><div class="album-content">${r.photo?`<img class="album-photo" src="${r.photo}">`:'<div class="album-photo" style="display:flex;align-items:center;justify-content:center;font-size:40px">🐾</div>'}<div class="album-meta">${r.weight?`<div class="weight">⚖️ ${r.weight}kg</div>`:''}${r.note?`<div class="note">${r.note}</div>`:''}<div class="date">📅 ${r.date}</div></div></div></div>`}).join('');
+  render(){const p=Store.getCurrentPet();const el=document.getElementById('album-timeline');if(!p){el.innerHTML='<div class="empty-state"><span class="empty-icon"><span class="px px-qa px-camera"></span></span><p>请先选择宠物</p></div>';return}
+    const records=Store.getAlbumRecords(p.id);if(records.length===0){el.innerHTML='<div class="album-empty"><div class="icon"><span class="px px-qa px-camera"></span></div><p>还没有成长记录</p><p style="font-size:13px;margin-top:6px">点击右上角「+ 记录」开始记录</p></div>';return}
+    el.innerHTML=records.map((r,i)=>{const age=Store.calcAgeByDate(p.birthDate,r.date);const isLast=i===records.length-1;return`<div class="album-entry"><div class="album-date-col"><div class="age-tag">${age||''}</div><div class="date-circle">${r.date.slice(5)}</div>${!isLast?'<div class="line"></div>':''}</div><div class="album-content">${r.photo?`<img class="album-photo" src="${r.photo}">`:'<div class="album-photo" style="display:flex;align-items:center;justify-content:center"><span class="px px-qa px-camera"></span></div>'}<div class="album-meta">${r.weight?`<div class="weight">${r.weight}kg</div>`:''}${r.note?`<div class="note">${r.note}</div>`:''}<div class="date">${r.date}</div></div></div></div>`}).join('');
     el.querySelectorAll('.album-content').forEach(c=>{const del=c.querySelector('.weight');if(del){c.addEventListener('longpress',()=>{})}})},
   openAddModal(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}document.getElementById('album-date').value=Store.formatDate(new Date());document.getElementById('album-weight').value=p.weight||'';document.getElementById('album-note').value='';this.photoData=null;document.getElementById('album-photo-preview').style.display='none';document.getElementById('album-photo-btn').style.display='flex';App.openModal('modal-album')},
   async handlePhoto(e){const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){App.showToast('图片不能超过5MB');return}App.showLoading('处理图片...');this.photoData=await API.fileToBase64(f);App.hideLoading();const prev=document.getElementById('album-photo-preview');prev.src=this.photoData;prev.style.display='block';document.getElementById('album-photo-btn').style.display='none';e.target.value='';App.showToast('图片已添加')},
@@ -731,7 +730,7 @@ const Hospital={
 
 // ====== HEALTH RECORD ======
 const HealthRecord={
-  typeConfig:{vaccine:{emoji:'💉',label:'疫苗'},deworm:{emoji:'🪱',label:'驱虫'},exam:{emoji:'🩺',label:'体检'},weight:{emoji:'⚖️',label:'体重'},visit:{emoji:'📋',label:'就诊'}},
+  typeConfig:{vaccine:{label:'疫苗'},deworm:{label:'驱虫'},exam:{label:'体检'},weight:{label:'体重'},visit:{label:'就诊'}},
   init(){document.getElementById('record-type').addEventListener('change',e=>{const w=e.target.value==='weight';document.getElementById('record-name-group').style.display=w?'none':'';document.getElementById('record-next-group').style.display=w?'none':'';document.getElementById('record-weight-group').style.display=w?'':'none'});
     document.querySelectorAll('.health-tab').forEach(t=>{t.addEventListener('click',()=>{document.querySelectorAll('.health-tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('health-records-tab').style.display=t.dataset.tab==='records'?'':'none';document.getElementById('health-history-tab').style.display=t.dataset.tab==='history'?'':'none';document.getElementById('health-weight-tab').style.display=t.dataset.tab==='weight'?'':'none'})})},
   openAddModal(){const p=Store.getCurrentPet();if(!p){App.showToast('请先选择宠物');return}document.getElementById('record-type').value='vaccine';document.getElementById('record-date').value=Store.formatDate(new Date());document.getElementById('record-name').value='';document.getElementById('record-next-date').value='';document.getElementById('record-weight').value='';document.getElementById('record-note').value='';document.getElementById('record-name-group').style.display='';document.getElementById('record-next-group').style.display='';document.getElementById('record-weight-group').style.display='none';App.openModal('modal-record')},
@@ -742,23 +741,23 @@ const HealthRecord={
     const rs=Store.getHealthRecords(p.id).sort((a,b)=>b.date.localeCompare(a.date));if(rs.length===0){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     l.innerHTML=rs.map(r=>{const c=this.typeConfig[r.type]||{emoji:'📋',label:r.type};let mp=[r.date];if(r.nextDate)mp.push('下次: '+r.nextDate);if(r.weight)mp.push(r.weight+'kg');if(r.hospital)mp.push(r.hospital);
       let extra='';if(r.type==='visit'){if(r.diagnosis)extra+=`<div class="note" style="color:var(--primary);font-weight:500">诊断：${r.diagnosis}</div>`;if(r.medications)extra+=`<div class="note">用药：${r.medications}</div>`;if(r.advice)extra+=`<div class="note">医嘱：${r.advice}</div>`}else if(r.note)extra=`<div class="note">${r.note}</div>`;
-      return`<div class="record-card"><div class="icon">${c.emoji}</div><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${extra}</div><button class="pet-delete-btn" data-record-id="${r.id}">🗑️</button></div>`}).join('');
+      return`<div class="record-card"><div class="info"><div class="name">${r.name||c.label}</div><div class="meta">${mp.join(' · ')}</div>${extra}</div><button class="pet-delete-btn" data-record-id="${r.id}">删除</button></div>`}).join('');
     l.querySelectorAll('[data-record-id]').forEach(b=>{b.addEventListener('click',()=>{if(confirm('删除此记录？')){Store.deleteHealthRecord(b.dataset.recordId);this.renderRecords();App.renderReminders();App.showToast('已删除')}})})},
   renderHistory(){const p=Store.getCurrentPet();const l=document.getElementById('history-list');if(!p){l.innerHTML='<div class="empty-state">暂无记录</div>';return}
     const cs=Store.getConsultations(p.id).sort((a,b)=>b.timestamp.localeCompare(a.timestamp));if(cs.length===0){l.innerHTML='<div class="empty-state">暂无问诊记录</div>';return}
-    l.innerHTML=cs.map(c=>{const d=c.timestamp.slice(0,16).replace('T',' ');const dg=c.diagnosis;let sb='';if(dg){const cl=dg.severityLevel==='urgent'?'urgent':dg.severityLevel==='soon'?'soon':'observe';const lb=dg.severityLevel==='urgent'?'🔴 紧急就医':dg.severityLevel==='soon'?'🟡 建议就医':'🟢 可观察';sb=`<span class="severity-badge ${cl}">${lb}</span>`}const ca=dg?.possibleCauses?.join('、')||'无';return`<div class="history-card"><div class="date">${d}</div><div class="summary">可能原因：${ca}</div>${sb}</div>`}).join('')},
+    l.innerHTML=cs.map(c=>{const d=c.timestamp.slice(0,16).replace('T',' ');const dg=c.diagnosis;let sb='';if(dg){const cl=dg.severityLevel==='urgent'?'urgent':dg.severityLevel==='soon'?'soon':'observe';const lb=dg.severityLevel==='urgent'?'紧急就医':dg.severityLevel==='soon'?'建议就医':'可观察';sb=`<span class="severity-badge ${cl}">${lb}</span>`}const ca=dg?.possibleCauses?.join('、')||'无';return`<div class="history-card"><div class="date">${d}</div><div class="summary">可能原因：${ca}</div>${sb}</div>`}).join('')},
   renderWeightChart(){const p=Store.getCurrentPet();const c=document.getElementById('weight-chart');if(!p){c.innerHTML='<div class="empty-state">暂无体重数据</div>';return}
     const rs=Store.getHealthRecords(p.id).filter(r=>r.type==='weight'&&r.weight).sort((a,b)=>a.date.localeCompare(b.date));if(rs.length===0){c.innerHTML='<div class="empty-state">暂无体重数据<div><p style="font-size:13px;margin-top:8px;">在健康记录中添加体重记录即可看到趋势</p></div></div>';return}
     if(rs.length===1){c.innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:32px;font-weight:700;color:var(--primary);">${rs[0].weight}<span style="font-size:16px;color:#999;"> kg</span></div><div style="font-size:13px;color:#999;margin-top:4px;">${rs[0].date}</div></div>`;return}
     const ws=rs.map(r=>r.weight),ds=rs.map(r=>r.date.slice(5));const mx=Math.max(...ws)*1.1,mn=Math.min(...ws)*0.9,rng=mx-mn||1;const W=300,H=150,pad=30,cw=W-pad*2,ch=H-pad*2;
     const pts=ws.map((w,i)=>({x:pad+(i/(ws.length-1))*cw,y:pad+ch-((w-mn)/rng)*ch,val:w}));const pd=pts.map((p,i)=>`${i===0?'M':'L'}${p.x},${p.y}`).join(' ');const ad=`${pd} L${pts[pts.length-1].x},${pad+ch} L${pts[0].x},${pad+ch} Z`;
     let lb=ds.map((d,i)=>{if(ds.length>6&&i%2!==0)return'';return`<text x="${pts[i].x}" y="${H-8}" text-anchor="middle" fill="#999" font-size="9">${d}</text>`}).join('');
-    let dt=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#5EC8B6"/><text x="${p.x}" y="${p.y-6}" text-anchor="middle" fill="#5EC8B6" font-size="9">${p.val}kg</text>`).join('');
-    c.innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:200px;"><path d="${ad}" fill="rgba(94,200,182,0.1)"/><path d="${pd}" fill="none" stroke="#5EC8B6" stroke-width="2"/>${dt}${lb}</svg>`},
+    let dt=pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#1A1A2E"/><text x="${p.x}" y="${p.y-6}" text-anchor="middle" fill="#1A1A2E" font-size="9">${p.val}kg</text>`).join('');
+    c.innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:200px;"><path d="${ad}" fill="rgba(45,52,54,0.05)"/><path d="${pd}" fill="none" stroke="#1A1A2E" stroke-width="2"/>${dt}${lb}</svg>`},
   renderAll(){this.renderRecords();this.renderHistory();this.renderWeightChart()},
   getReminders(){const ps=Store.getPets();const rs=[];const today=new Date();
     const inDays=d=>{if(!d)return null;return Math.ceil((new Date(d)-today)/(1000*60*60*24))};
-    ps.forEach(p=>{Store.getHealthRecords(p.id).forEach(r=>{if(r.nextDate){const days=inDays(r.nextDate);if(days!==null&&days<=30){const c=this.typeConfig[r.type]||{emoji:'📋',label:'记录'};rs.push({petName:p.name,emoji:c.emoji,title:days<0?`${r.name||c.label}已到期`:`${r.name||c.label}还有${days}天到期`,desc:`${p.name} · ${r.nextDate}`,days})}}})});return rs.sort((a,b)=>a.days-b.days)}
+    ps.forEach(p=>{Store.getHealthRecords(p.id).forEach(r=>{if(r.nextDate){const days=inDays(r.nextDate);if(days!==null&&days<=30){const c=this.typeConfig[r.type]||{label:'记录'};rs.push({petName:p.name,title:days<0?`${r.name||c.label}已到期`:`${r.name||c.label}还有${days}天到期`,desc:`${p.name} · ${r.nextDate}`,days})}}})});return rs.sort((a,b)=>a.days-b.days)}
 };
 
 // ====== VISIT RECORD (拍病历) ======
@@ -857,7 +856,7 @@ const App={
     if(name==='dashboard'){Profile.renderPetList();this.renderReminders()}},
   updateChatPetInfo(){const p=Store.getCurrentPet();const el=document.getElementById('chat-pet-info');if(p)el.innerHTML=`<span class="selected">${Profile.getEmoji(p.type)} ${p.name}</span> · ${Store.calcAge(p.birthDate)} · ${p.weight||'?'}kg`;else el.textContent='请先选择宠物'},
   renderReminders(){const rs=HealthRecord.getReminders();const el=document.getElementById('reminder-list');if(rs.length===0){el.innerHTML='<div class="empty-state" style="padding:20px;font-size:13px;">暂无提醒</div>';return}
-    el.innerHTML=rs.slice(0,5).map(r=>`<div class="reminder-card"><span class="icon">${r.emoji}</span><div class="info"><div class="title">${r.title}</div><div class="desc">${r.desc}</div></div></div>`).join('')},
+    el.innerHTML=rs.slice(0,5).map(r=>`<div class="reminder-card"><div class="info"><div class="title">${r.title}</div><div class="desc">${r.desc}</div></div></div>`).join('')},
   openModal(id){document.getElementById(id).classList.add('active')},
   closeModal(id){document.getElementById(id).classList.remove('active')},
   showLoading(t='AI思考中...'){document.getElementById('loading-text').textContent=t;document.getElementById('loading-overlay').classList.add('active')},
