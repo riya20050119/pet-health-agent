@@ -9,7 +9,10 @@
 *{margin:0;padding:0;box-sizing:border-box}
 *:focus{outline:none}
 html{-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#FAF8F4;color:#2C3E40;line-height:1.5;overflow-x:hidden;min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#FAF8F4;color:#2C3E40;line-height:1.5;overflow-x:hidden;min-height:100vh;position:relative}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background-image:url(img/bg-pets2.jpg);background-size:100% auto;background-position:bottom center;background-repeat:no-repeat;opacity:.35;z-index:0;pointer-events:none}
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(250,248,244,.95) 0%,rgba(250,248,244,.7) 60%,rgba(250,248,244,.5) 100%);z-index:0;pointer-events:none}
+.app-container{position:relative;z-index:1}
 button{border:none;background:none;cursor:pointer;font-family:inherit}
 input,textarea,select{font-family:inherit}
 img{max-width:100%;display:block}
@@ -219,10 +222,10 @@ img{max-width:100%;display:block}
 .nav-icon{display:flex;align-items:center;justify-content:center;height:32px;margin-bottom:2px}
 .nav-item.active .nav-icon{transform:scale(1.1)}
 
-/* Pixel Art Icons */
-.px{display:inline-block;background-image:url(img/vector-pets-sheet.jpg?v=2);background-repeat:no-repeat}
-.px-nav{width:28px;height:28px;background-size:84px 84px}
-.px-qa{width:48px;height:48px;background-size:144px 144px}
+/* Cute 2D Icons */
+.px{display:inline-block;background-image:url(img/cute-icons-sheet.jpg);background-repeat:no-repeat}
+.px-nav{width:32px;height:32px;background-size:96px 96px}
+.px-qa{width:56px;height:56px;background-size:168px 168px}
 .px-cat{background-position:0% 0%}
 .px-dog{background-position:50% 0%}
 .px-stetho{background-position:100% 0%}
@@ -298,7 +301,7 @@ textarea.form-input{resize:vertical;min-height:60px}
 </style>
 </head>
 <body>
-<div id="app">
+<div id="app" class="app-container">
   <header class="app-header">
     <div class="header-content">
       <h1 class="app-title">宠医智伴</h1>
