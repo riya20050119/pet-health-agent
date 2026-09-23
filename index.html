@@ -499,8 +499,14 @@ textarea.form-input{resize:vertical;min-height:60px}
 <script>
 // ====== SVG ICONS ======
 const ICON_SVGS={
-cat:`<img src="img/cat-stardew.png?v=4" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
-dog:`<img src="img/dog-stardew.png?v=4" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+cat:`<img src="img/cat-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+dog:`<img src="img/dog-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+rabbit:`<img src="img/rabbit-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+hamster:`<img src="img/hamster-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+chinchilla:`<img src="img/chinchilla-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+turtle:`<img src="img/turtle-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+lizard:`<img src="img/lizard-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
+other:`<img src="img/other-stardew.png?v=5" style="width:100%;height:100%;object-fit:contain;image-rendering:pixelated">`,
 stetho:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M10 8v8a8 8 0 0016 0V8" fill="none" stroke="#4FA8B5" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="8" r="3" fill="#4FA8B5"/><circle cx="28" cy="8" r="3" fill="#4FA8B5"/><path d="M18 24v6a8 8 0 0016 0v-4" fill="none" stroke="#4FA8B5" stroke-width="2.5" stroke-linecap="round"/><circle cx="34" cy="22" r="4.5" fill="#fff" stroke="#4FA8B5" stroke-width="2.5"/><circle cx="34" cy="22" r="1.5" fill="#4FA8B5"/></svg>`,
 bowl:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M6 24h36v4a12 12 0 01-12 12H18a12 12 0 01-12-12z" fill="#8EC07C" stroke="#6B9E5A" stroke-width="2" stroke-linejoin="round"/><ellipse cx="24" cy="24" rx="18" ry="3.5" fill="#A8D5A8" stroke="#6B9E5A" stroke-width="1.5"/><circle cx="17" cy="23" r="2.5" fill="#F4A261"/><circle cx="25" cy="22" r="3" fill="#F4A261"/><circle cx="32" cy="23" r="2.5" fill="#F4A261"/></svg>`,
 calendar:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="11" width="34" height="31" rx="4" fill="#F4B886" stroke="#D4845C" stroke-width="2"/><path d="M7 19h34" stroke="#D4845C" stroke-width="1.5"/><path d="M14 7v6M34 7v6" stroke="#D4845C" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="27" r="2.5" fill="#fff"/><circle cx="24" cy="27" r="2.5" fill="#fff"/><circle cx="33" cy="27" r="2.5" fill="#E85D5D"/><circle cx="15" cy="35" r="2.5" fill="#E8C495"/><circle cx="24" cy="35" r="2.5" fill="#fff"/><circle cx="33" cy="35" r="2.5" fill="#E8C495"/></svg>`,
@@ -509,8 +515,8 @@ clipboard:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="
 hospital:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24 8L8 22v18h32V22z" fill="#E8C495" stroke="#9C7A4E" stroke-width="2" stroke-linejoin="round"/><rect x="20" y="26" width="8" height="8" rx="1" fill="#E85D5D"/><path d="M24 27v6M20 30.5h8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><rect x="13" y="33" width="6" height="7" rx="1" fill="#8EC07C"/><rect x="29" y="33" width="6" height="7" rx="1" fill="#8EC07C"/></svg>`,
 bag:`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M13 17h22l-2 27H15z" fill="#F4A261" stroke="#D4845C" stroke-width="2" stroke-linejoin="round"/><path d="M17 17v-3a7 7 0 0114 0v3" fill="none" stroke="#D4845C" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="28" r="2" fill="#fff"/><path d="M20 31a4 3 0 008 0" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>`
 };
-function pxIcon(n,s){const v=ICON_SVGS[n]||ICON_SVGS.dog;if(v.indexOf('<svg')>=0){return v.replace('viewBox="0 0 48 48"','viewBox="0 0 48 48" width="'+s+'" height="'+s+'"')}return v}
-function renderPxIcons(){document.querySelectorAll('.px').forEach(function(el){const cls=el.className;const isQA=cls.indexOf('px-qa')>=0;const sz=isQA?56:32;let n='dog';['cat','dog','stetho','bowl','calendar','camera','clipboard','hospital','bag'].forEach(function(k){if(cls.indexOf('px-'+k)>=0)n=k});el.innerHTML=pxIcon(n,sz);el.style.width=sz+'px';el.style.height=sz+'px'})}
+function pxIcon(n,s){const v=ICON_SVGS[n]||ICON_SVGS.other;if(v.indexOf('<svg')>=0){return v.replace('viewBox="0 0 48 48"','viewBox="0 0 48 48" width="'+s+'" height="'+s+'"')}return v}
+function renderPxIcons(){document.querySelectorAll('.px').forEach(function(el){const cls=el.className;const isQA=cls.indexOf('px-qa')>=0;const sz=isQA?56:32;let n='other';['cat','dog','rabbit','hamster','chinchilla','turtle','lizard','other','stetho','bowl','calendar','camera','clipboard','hospital','bag'].forEach(function(k){if(cls.indexOf('px-'+k)>=0)n=k});el.innerHTML=pxIcon(n,sz);el.style.width=sz+'px';el.style.height=sz+'px'})}
 
 // ====== CONFIG ======
 const DASHSCOPE_API_KEY='sk-ws-H.PIIIIHR.Qcr7.MEUCIQCesyC0OO7C5HDtOezL-SnV4AAk1yKxuxEPCFyKd0j6iAIgWqmqA1Wcuxwdk2CfXnoVDmJ2xZ5B3FovRg7u1RGXnyQ';
@@ -579,7 +585,7 @@ const Prompts={
 
 // ====== PROFILE ======
 const Profile={
-  petTypes:[{key:'cat',label:'猫',pxClass:'px-cat'},{key:'dog',label:'狗',pxClass:'px-dog'},{key:'rabbit',label:'兔子',pxClass:'px-dog'},{key:'hamster',label:'仓鼠',pxClass:'px-dog'},{key:'chinchilla',label:'龙猫',pxClass:'px-dog'},{key:'turtle',label:'龟',pxClass:'px-dog'},{key:'lizard',label:'蜥蜴',pxClass:'px-dog'},{key:'other',label:'其他',pxClass:'px-dog'}],
+  petTypes:[{key:'cat',label:'猫',pxClass:'px-cat'},{key:'dog',label:'狗',pxClass:'px-dog'},{key:'rabbit',label:'兔子',pxClass:'px-rabbit'},{key:'hamster',label:'仓鼠',pxClass:'px-hamster'},{key:'chinchilla',label:'龙猫',pxClass:'px-chinchilla'},{key:'turtle',label:'龟',pxClass:'px-turtle'},{key:'lizard',label:'蜥蜴',pxClass:'px-lizard'},{key:'other',label:'其他',pxClass:'px-other'}],
   editingPetId:null,selectedType:'cat',
   getEmoji(t){const p=this.petTypes.find(x=>x.key===t);return p?`<span class="px px-nav ${p.pxClass||'px-dog'}"></span>`:'<span class="px px-nav px-dog"></span>'},
   getTypeLabel(t){const p=this.petTypes.find(x=>x.key===t);return p?p.label:t},
